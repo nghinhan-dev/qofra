@@ -1,6 +1,7 @@
 import express from "express";
 import { generateQuestions } from "../controllers/question.mjs";
+import { verifyToken } from "../middlewares/auth/verifyToken.mjs";
 
-export const router = express.Router();
+export const questionRoutes = express.Router();
 
-router.post("/questions", generateQuestions);
+questionRoutes.use(verifyToken).post("/questions", generateQuestions);
