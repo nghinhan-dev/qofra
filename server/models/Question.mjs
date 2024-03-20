@@ -16,16 +16,18 @@ const questionSchema = new Schema(
     level: Number,
     process: String,
     lastTimeAudit: Date,
+    hasIssue: Boolean,
   },
   {
     statics: {
-      generateQuestions({ dep, process, level }) {
+      generateQuestions({ dep, process, level, hasIssue }) {
         const questions = this.aggregate([
           {
             $match: {
               dep: dep,
               process: process,
               level: level,
+              hasIssue: hasIssue,
             },
           },
           {
