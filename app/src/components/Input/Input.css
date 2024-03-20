@@ -1,0 +1,35 @@
+label {
+  font-weight: 500;
+}
+
+.input__container {
+  display: flex;
+  align-items: center;
+  color: var(--sub-op-color);
+  border: 1px solid var(--sub-op-color);
+  transition: 0.4s all;
+  border-radius: 3px;
+  background: #000;
+  padding: 0.5rem 0;
+
+  & .lucide {
+    margin: 0 0.45rem;
+  }
+
+  & input {
+    border: none;
+    color: inherit;
+    border-left: 1px solid var(--sub-op-color);
+    background: #000;
+    font-size: 1rem;
+    width: fit-content;
+    padding-left: 0.5rem;
+    outline: none;
+  }
+
+  &:has(input:focus),
+  &:has(input:focus) input {
+    color: var(--sub-color);
+    border-color: var(--sub-color);
+  }
+}

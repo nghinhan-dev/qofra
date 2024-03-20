@@ -1,0 +1,7 @@
+button {
+  font-weight: 500;
+  display: block;
+  font-size: 0.9rem;
+  padding: 0.2rem 0.5rem;
+  width: fit-content;
+}

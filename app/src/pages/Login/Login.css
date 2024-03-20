@@ -1,0 +1,40 @@
+#loginPage {
+  position: relative;
+  background-image: url("/login_bg.jpg");
+  background-size: 108% 154%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    background: hsla(0, 0%, 0%, 0.507);
+    height: 100%;
+    width: 100%;
+  }
+
+  &:has(label) label {
+    color: var(--sub-color);
+  }
+
+  & .login__container {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 2.5rem;
+    background-color: var(--primary-color);
+    border-radius: 4px;
+    padding: 2.5rem;
+  }
+
+  & img {
+    width: 80%;
+  }
+}

@@ -6,11 +6,14 @@ import Login from "../pages/Login/Login";
 import Opl from "../pages/Opl/Opl";
 import Report from "../pages/Report/Report";
 import Finding from "../pages/Finding/Finding";
+import { loginAction } from "../service/UserAPI";
+import Error from "../pages/Error/Error";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <Error />,
     children: [
       {
         path: "/audit",
@@ -33,6 +36,8 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+    action: loginAction,
+    errorElement: <Error />,
   },
 ]);
 
