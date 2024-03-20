@@ -3,20 +3,20 @@ import { createError } from "../../utils/createError.mjs";
 
 export async function verifyToken(req, res, next) {
   try {
-    const cookie = req.cookie;
+    const authHeader = req.headers.authorization || req.headers.Authorization;
 
-    // CHECK COOKIE
-    if (!cookie?.jwt) throw createError(401, "Unauthorized");
-    const refreshToken = cookie.jwt;
+    if (!authHeader?.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
-    // VERIFY
-    const decodedToken = jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN_SECRET
-    );
+    const token = authHeader.split(" ")[1];
 
-    console.log(decodedToken);
-    next();
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+      if (err) throw createError(403, "Forbidden");
+      req.user = decoded.user.username;
+      req.roles = decoded.user.roles;
+      next();
+    });
   } catch (error) {
     next(error);
   }
