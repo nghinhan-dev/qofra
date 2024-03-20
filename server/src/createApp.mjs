@@ -27,8 +27,8 @@ function createExpressApp() {
   app.use(cookieParser());
 
   app.use(function (res, req, next) {
-    // res.header("Content-Type", "application/json;charset=UTF-8");
-    res.header("Access-Control-Allow-Credentials", true);
+    res.header("Content-Type", "application/json;charset=UTF-8");
+    res.header("Access-Control-Allow-Credentials");
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"

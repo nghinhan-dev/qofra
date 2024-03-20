@@ -3,7 +3,7 @@ import mongoDBStore from "connect-mongo";
 
 export const corsConfig = {
   origin: "http://localhost:3000",
-  credetials: true,
+  credentials: true,
 };
 
 export const sessionsConfig = session({
@@ -16,8 +16,7 @@ export const sessionsConfig = session({
   }),
   cookie: {
     maxAge: 86400000,
-    // sameSite: "none",
-    // secure: true,
-    // httpOnly: true,
+    sameSite: "none",
+    httpOnly: true,
   },
 });

@@ -3,12 +3,20 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
+  username: String,
+  password: String,
   fullName: String,
   email: String,
-  role: String,
+  role: {
+    type: String,
+    enum: {
+      values: ["TL", "HOD", "BOD"],
+      message: "{VALUE} is not supported",
+    },
+  },
   findings: [
     {
-      type: ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Finding",
       default: [],
     },

@@ -1,6 +1,6 @@
 export function createError(statusCode, message) {
-  return {
-    statusCode: statusCode,
-    message: message,
-  };
+  const newError = new Error(message);
+  newError.statusCode = statusCode;
+
+  return newError;
 }
