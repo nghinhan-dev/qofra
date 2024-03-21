@@ -1,16 +1,18 @@
-import express from "express";
 import cors from "cors";
-import cookieParser from "cookie-parser";
+import helmet from "helmet";
+import express from "express";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import { useRoutes } from "./useRoutes.mjs";
 import { connectDB } from "../lib/mongoose.mjs";
 import { sessionsConfig, corsConfig } from "./config.mjs";
-import { useRoutes } from "./useRoutes.mjs";
 
 export async function createApp(httpServer) {
   await connectDB();
   const app = createExpressApp();
   httpServer.on("request", app);
 
+  app.use(helmet());
   app.use(cors(corsConfig));
   app.use(sessionsConfig);
 
