@@ -35,3 +35,17 @@ nav {
     color: var(--primary-color);
   }
 }
+
+footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 0.7rem;
+  color: var(--sub-color);
+  text-align: center;
+
+  & a {
+    color: var(--sub-color);
+    text-decoration: none;
+  }
+}

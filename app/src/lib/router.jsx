@@ -10,32 +10,34 @@ import Error from "../pages/Error/Error";
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <App />,
     errorElement: <Error />,
     children: [
       {
-        path: "/audit",
-        element: <Audit />,
+        children: [
+          {
+            index: true,
+            element: <Audit />,
+          },
+          {
+            path: "report",
+            element: <Report />,
+          },
+          {
+            path: "opl",
+            element: <Opl />,
+          },
+          {
+            path: "finding",
+            element: <Finding />,
+          },
+        ],
       },
       {
-        path: "/report",
-        element: <Report />,
-      },
-      {
-        path: "/opl",
-        element: <Opl />,
-      },
-      {
-        path: "/finding",
-        element: <Finding />,
+        path: "/login",
+        element: <Login />,
       },
     ],
-  },
-  {
-    path: "/login",
-    element: <Login />,
-    errorElement: <Error />,
   },
 ]);
 

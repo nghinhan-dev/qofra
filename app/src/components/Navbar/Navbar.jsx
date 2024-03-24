@@ -4,7 +4,7 @@ export default function Navbar() {
   return (
     <nav>
       <NavLink
-        to="/audit"
+        to="/"
         className={({ isActive }) =>
           isActive ? "isActive nav__item" : "nav__item"
         }

@@ -1,3 +1,12 @@
 export default function Footer() {
-  return <div>Footer</div>;
+  return (
+    <footer>
+      <p>
+        Copyright &#xa9; 2024,{" "}
+        <a href="https://github.com/nghinhan-dev" target="_blank">
+          sillywhale
+        </a>
+      </p>
+    </footer>
+  );
 }
