@@ -34,6 +34,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        console.log(arg);
         try {
           const { data } = await queryFulfilled;
           console.log(data);
@@ -45,6 +46,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       },
     }),
   }),
+  overrideExisting: false,
 });
 
 export const { useLoginMutation, useSendLogoutMutation, useRefreshMutation } =

@@ -1,8 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials } from "./authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.BASE_URL,
+  baseUrl: import.meta.env.VITE_SERVER_URL,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
@@ -20,7 +20,6 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 
   if (result?.error?.status === 403) {
     const refreshResult = await baseQuery("/auth/refresh", api, extraOptions);
-
     if (refreshResult?.data) {
       api.dispatch(setCredentials({ ...refreshResult.data }));
 
@@ -39,7 +38,8 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 };
 
 export const apiSlice = createApi({
+  reducerPath: "api",
   baseQuery: baseQueryWithReAuth,
   // eslint-disable-next-line no-unused-vars
-  endpoints: (builder) => ({}),
+  endpoints: () => ({}),
 });
