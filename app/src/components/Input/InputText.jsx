@@ -1,11 +1,18 @@
 /* eslint-disable react/prop-types */
 import "./Input.css";
 
-export default function InputText({ icon, name, placeHolder }) {
+export default function InputText({ icon, placeHolder, setState }) {
   return (
-    <div className="input__container">
-      {icon}
-      <input type="text" name={name} placeholder={placeHolder} />
-    </div>
+    <>
+      <div className="input__container">
+        {icon}
+        <input
+          type="text"
+          onChange={(event) => setState(() => event.target.value)}
+          placeholder={placeHolder}
+        />
+      </div>
+      <p></p>
+    </>
   );
 }

@@ -1,3 +1,12 @@
+import { RotateCw } from "lucide-react";
+
 export default function Loading() {
-  return <div>Loading</div>;
+  return (
+    <div>
+      <h1>
+        <RotateCw />
+        Loading
+      </h1>
+    </div>
+  );
 }
