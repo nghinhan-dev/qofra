@@ -15,14 +15,14 @@ export async function login(req, res, next) {
     const { username, password } = req.body;
 
     // CHECK USERNAME
-    const user = await User.find({ username: username });
+    const user = await User.findOne({ username: username });
 
     if (user.length === 0) {
       throw createError(404, `User with username ${username} not found`);
     }
 
     // CHECK PASSWORD
-    const isMatch = await comparePassword(password, user[0].password);
+    const isMatch = await comparePassword(password, user.password);
 
     if (!isMatch) {
       throw createError(401, "Login Failed. Password mismatch");
@@ -32,10 +32,10 @@ export async function login(req, res, next) {
     const accessToken = jwt.sign(
       {
         user: {
-          username: user[0].username,
-          fullName: user[0].fullName,
-          email: user[0].email,
-          role: user[0].role,
+          username: user.username,
+          fullName: user.fullName,
+          email: user.email,
+          role: user.role,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
@@ -45,7 +45,7 @@ export async function login(req, res, next) {
     );
 
     const refreshToken = jwt.sign(
-      { username: user[0].username },
+      { username: user.username },
       process.env.REFRESH_TOKEN_SECRET,
       {
         expiresIn: "1d",
@@ -79,9 +79,9 @@ export async function signUp(req, res, next) {
     const { username, password, fullName, email, role } = req.body;
 
     // CHECK EXISTED ACCOUNT
-    const user = await User.find({ email: email });
+    const user = await User.findOne({ email: email });
 
-    if (user[0]) {
+    if (user) {
       throw createError(
         409,
         "Existed email, please use a different email or try logging in"
@@ -113,3 +113,45 @@ export async function signUp(req, res, next) {
 }
 
 export async function logout(req, res, next) {}
+
+export async function refresh(req, res, next) {
+  try {
+    const cookies = req.cookies;
+
+    if (!cookies?.jwt) throw createError(401, "Unauthorized");
+
+    const refreshToken = cookies.jwt;
+
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      (err, decoded) => {
+        if (err) throw createError(403, "Forbidden");
+
+        return decoded;
+      }
+    );
+
+    const foundUser = await User.findOne({ username: decoded.username }).exec();
+    if (!foundUser) throw createError(401, "Unauthorized");
+
+    const accessToken = jwt.sign(
+      {
+        user: {
+          username: foundUser.username,
+          fullName: foundUser.fullName,
+          email: foundUser.email,
+          role: foundUser.role,
+        },
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: "30m",
+      }
+    );
+
+    res.send({ accessToken: accessToken });
+  } catch (error) {
+    next(error);
+  }
+}
