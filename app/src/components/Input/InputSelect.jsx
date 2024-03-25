@@ -6,6 +6,7 @@ export default function InputSelect({
   options,
   deparmentSelect,
   affectOther = false,
+  setState,
 }) {
   return (
     <div className="select__wraper">
@@ -15,8 +16,9 @@ export default function InputSelect({
         placeholder={`Select ${label}`}
         isSearchable={false}
         onChange={({ value }, { action }) => {
-          if (action === "select-option" && affectOther) {
-            deparmentSelect(value);
+          if (action === "select-option") {
+            if (affectOther) deparmentSelect(value);
+            setState(() => value);
           }
         }}
         className="react-select-container"
