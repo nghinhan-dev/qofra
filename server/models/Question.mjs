@@ -20,7 +20,7 @@ const questionSchema = new Schema(
   },
   {
     statics: {
-      generateQuestions({ dep, process, level, hasIssue }) {
+      generateQuestions({ dep, process, level, hasIssue = false }) {
         const questions = this.aggregate([
           {
             $match: {

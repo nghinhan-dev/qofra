@@ -4,4 +4,4 @@ import { verifyToken } from "../middlewares/auth/verifyToken.mjs";
 
 export const questionRoutes = express.Router();
 
-questionRoutes.use(verifyToken).post("/questions", generateQuestions);
+questionRoutes.use(verifyToken).post("/generate", generateQuestions);

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import InputSelect from "../../components/Input/InputSelect";
 import Button from "../../components/Button/Button";
-import "./GenQuestion.css";
 
 const depOptions = [
   { value: "C&M", label: "C&M" },
@@ -9,12 +8,13 @@ const depOptions = [
 ];
 
 const levelOptions = [
-  { value: "1", label: "1" },
-  { value: "2", label: "2" },
-  { value: "3", label: "3" },
+  { value: 1, label: "1" },
+  { value: 2, label: "2" },
+  { value: 3, label: "3" },
 ];
 
-export default function GenQuestion() {
+// eslint-disable-next-line react/prop-types
+export default function GenQuestion({ setDepartment, setProcess, setLevel }) {
   const [processOpts, setProcessOpts] = useState([
     { value: "Mold Setter", label: "Mold Setter" },
     { value: "Extruder", label: "Extruder" },
@@ -27,24 +27,27 @@ export default function GenQuestion() {
       ? setProcessOpts([
           { value: "Extruder", label: "Extruder" },
           { value: "Mixing", label: "Mixing" },
-          { value: "Crushing", label: "Production" },
+          { value: "Crushing", label: "Crushing" },
         ])
       : setProcessOpts([{ value: "Mold Setter", label: "Mold Setter" }]);
   };
 
   return (
-    <div className="form__genQ">
-      <form>
-        <InputSelect
-          label={"Deparment"}
-          options={depOptions}
-          deparmentSelect={deparmentSelect}
-          affectOther={true}
-        />
-        <InputSelect label={"Process"} options={processOpts} />
-        <InputSelect label={"Level"} options={levelOptions} />
-        <Button type={"submit"} value={"Submit"}></Button>
-      </form>
-    </div>
+    <>
+      <InputSelect
+        label={"Deparment"}
+        options={depOptions}
+        deparmentSelect={deparmentSelect}
+        setState={setDepartment}
+        affectOther={true}
+      />
+      <InputSelect
+        label={"Process"}
+        setState={setProcess}
+        options={processOpts}
+      />
+      <InputSelect label={"Level"} setState={setLevel} options={levelOptions} />
+      <Button type={"submit"} value={"Submit"}></Button>
+    </>
   );
 }

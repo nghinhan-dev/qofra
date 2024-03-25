@@ -4,6 +4,6 @@ import { authRoutes } from "../routes/auth.mjs";
 
 export function useRoutes(app) {
   app.use("/auth", authRoutes);
-  app.use(questionRoutes);
+  app.use("/questions", questionRoutes);
   app.use(findingRoutes);
 }
