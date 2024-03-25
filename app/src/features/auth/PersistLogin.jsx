@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 
 function PersistLogin() {
   const effectRan = useRef(false);
+
   const token = useSelector(selectCurrentToken);
   const [refresh, { isUninitialized, isLoading, isSuccess, isError, error }] =
     useRefreshMutation();
@@ -34,9 +35,9 @@ function PersistLogin() {
     content = <Loading />;
   } else if (isError) {
     content = (
-      <div id="error-page">
+      <div className="error-page">
         <p>{error.data?.message}</p>
-        <Link to="/login">Please login again</Link>
+        <Link to="login">Please login again</Link>
       </div>
     );
   } else if (isSuccess) {

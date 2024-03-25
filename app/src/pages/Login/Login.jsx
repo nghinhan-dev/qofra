@@ -26,7 +26,7 @@ export default function Login() {
       dispatch(setCredentials({ accessToken }));
       setUsername("");
       setPassword("");
-      navigate("/audit");
+      navigate("/");
     } catch (error) {
       toast(error.message);
     }
