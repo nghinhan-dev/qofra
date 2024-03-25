@@ -33,3 +33,33 @@ label {
     border-color: var(--sub-color);
   }
 }
+
+.select__wraper {
+  width: 250px;
+
+  & p {
+    font-size: 1rem;
+    color: var(--sub-color);
+    margin-bottom: 0.6rem;
+  }
+
+  & .react-select__control {
+    & .react-select__single-value,
+    .react-select__placeholder {
+      color: var(--sub-color) !important;
+    }
+
+    background-color: var(--primary-color);
+    appearance: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.2rem;
+    border-color: var(--sub-color);
+    box-shadow: 0 0 0 1px var(--highlight-color) !important;
+
+    &:hover {
+      color: var(--sub-color);
+      border-color: var(--sub-color);
+    }
+  }
+}

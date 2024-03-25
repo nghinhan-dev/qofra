@@ -1,0 +1,27 @@
+/* eslint-disable react/prop-types */
+import Select from "react-select";
+
+export default function InputSelect({
+  label,
+  options,
+  deparmentSelect,
+  affectOther = false,
+}) {
+  return (
+    <div className="select__wraper">
+      <p>{`${label} :`}</p>
+      <Select
+        options={options}
+        placeholder={`Select ${label}`}
+        isSearchable={false}
+        onChange={({ value }, { action }) => {
+          if (action === "select-option" && affectOther) {
+            deparmentSelect(value);
+          }
+        }}
+        className="react-select-container"
+        classNamePrefix="react-select"
+      />
+    </div>
+  );
+}
