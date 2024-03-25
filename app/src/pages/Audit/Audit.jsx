@@ -1,3 +1,9 @@
+import GenQuestion from "../../features/genQForm/GenQuestion";
+
 export default function Audit() {
-  return <div>Audit</div>;
+  return (
+    <>
+      <GenQuestion />
+    </>
+  );
 }

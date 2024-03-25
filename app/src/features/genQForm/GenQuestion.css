@@ -1,0 +1,10 @@
+.form__genQ {
+  display: grid;
+  height: 100dvh;
+  justify-items: center;
+  align-content: center;
+
+  & button {
+    font-size: 1.2rem;
+  }
+}
