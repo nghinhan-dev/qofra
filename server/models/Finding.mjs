@@ -12,7 +12,7 @@ const findingSchema = new Schema({
   reporter: String,
   personInCharge: String,
   desc: String,
-  images: [Buffer],
+  images: [String],
   status: String,
 });
 
