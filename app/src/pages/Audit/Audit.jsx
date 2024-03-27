@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useGetQuestionsMutation } from "../../service/QuestionAPI";
 import Loading from "../../components/Loading/Loading";
-import GenQuestion from "../../features/genQForm/GenQuestionForm";
 import Button from "../../components/Button/Button";
+import GenQuestion from "../../features/genQForm/GenQuestionForm";
+import SingleQForm from "../../features/singleQForm/SingleQFrom";
 import "./Audit.css";
 
 export default function Audit() {
+  const [questions, setQuestions] = useState([]);
   const [department, setDepartment] = useState("");
   const [process, setProcess] = useState("");
   const [level, setLevel] = useState("");
@@ -15,27 +17,26 @@ export default function Audit() {
     { isLoading, isUninitialized, isSuccess, isError, error, reset },
   ] = useGetQuestionsMutation();
 
-  let questions;
-
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      questions = await generateQ({
+      const result = await generateQ({
         dep: department,
         process: process,
         level: level,
         hasIssue: false,
       }).unwrap();
+      setQuestions(result);
     } catch (error) {
       console.log("error:", error);
     }
   };
 
   let content;
+
   if (isLoading) {
     content = <Loading />;
   } else if (isError) {
-    console.log(error);
     content = (
       <div className="error-page">
         <p>{error.data?.message}</p>
@@ -43,8 +44,7 @@ export default function Audit() {
       </div>
     );
   } else if (isSuccess) {
-    console.log(questions);
-    content = <h1>Success</h1>;
+    content = <SingleQForm questions={questions} />;
   }
 
   return (
@@ -58,6 +58,7 @@ export default function Audit() {
               setLevel={setLevel}
             />
           )}
+
           {content}
         </form>
       </div>

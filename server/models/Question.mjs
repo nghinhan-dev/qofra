@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 
 const { Schema } = mongoose;
 
@@ -45,7 +46,7 @@ const questionSchema = new Schema(
           },
           {
             $sort: {
-              "question.lastTimeAudit": 1,
+              "question.lastTimeAudit": -1,
             },
           },
           {
@@ -66,6 +67,43 @@ const questionSchema = new Schema(
         ]);
 
         return questions;
+      },
+      skipQuestion({ _id, scope, dep, process, level }) {
+        const questions = this.aggregate([
+          {
+            $match: {
+              _id: {
+                $ne: ObjectId(_id),
+              },
+              scope: scope,
+              process: process,
+              dep: dep,
+              level: level,
+            },
+          },
+          {
+            $sort: {
+              lastTimeAudit: -1,
+              hasIssue: 1,
+            },
+          },
+        ]);
+
+        return questions[0];
+      },
+      async passed(_id) {
+        const question = await this.findByIdAndUpdate(
+          _id,
+          {
+            lastTimeAudit: Date.now(),
+            hasIssue: false,
+          },
+          {
+            new: true,
+          }
+        );
+
+        return question;
       },
     },
   }
