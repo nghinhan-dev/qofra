@@ -32,10 +32,22 @@ const questionSchema = new Schema(
             },
           },
           {
+            $sort: {
+              lastTimeAudit: -1,
+            },
+          },
+          {
             $group: {
               _id: "$scope",
               question: {
                 $push: "$$ROOT",
+              },
+            },
+          },
+          {
+            $project: {
+              question: {
+                $slice: ["$question", 1],
               },
             },
           },
@@ -45,22 +57,42 @@ const questionSchema = new Schema(
             },
           },
           {
-            $sort: {
-              "question.lastTimeAudit": -1,
-            },
-          },
-          {
-            $group: {
-              _id: "$_id",
-              question: {
-                $push: "$question",
+            $lookup: {
+              from: "users",
+              let: {
+                inChargeIds: "$question.inCharge",
               },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $in: [
+                        {
+                          $toString: "$_id",
+                        },
+                        "$$inChargeIds",
+                      ],
+                    },
+                  },
+                },
+              ],
+              as: "question.inCharge",
             },
           },
           {
             $project: {
               question: {
-                $slice: ["$question", 1],
+                scope: 1,
+                inCharge: {
+                  fullName: 1,
+                  email: 1,
+                },
+                content: 1,
+                process: 1,
+                dep: 1,
+                level: 1,
+                lastTimeAudit: 1,
+                hasIssue: 1,
               },
             },
           },

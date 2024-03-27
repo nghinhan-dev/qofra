@@ -4,7 +4,7 @@ export async function generateQuestions(req, res, next) {
   try {
     const nestedQuestions = await Question.generateQuestions(req.body);
 
-    const questions = nestedQuestions.map((obj) => obj.question[0]);
+    const questions = nestedQuestions.map((obj) => obj.question);
 
     res.status(200).send(questions);
   } catch (error) {
