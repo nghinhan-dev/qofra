@@ -62,4 +62,8 @@ label {
       border-color: var(--sub-color);
     }
   }
+
+  & .react-select__menu * {
+    color: var(--primary-color);
+  }
 }

@@ -4,6 +4,7 @@ button {
   font-size: 0.9rem;
   padding: 0.2rem 0.5rem;
   border: 1px solid var(--sub-color);
+  color: var(--primary-color) !important;
   border-radius: 4px;
   cursor: pointer;
   width: fit-content;
