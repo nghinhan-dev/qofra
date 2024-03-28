@@ -100,8 +100,8 @@ const questionSchema = new Schema(
 
         return questions;
       },
-      skipQuestion({ _id, scope, dep, process, level }) {
-        const questions = this.aggregate([
+      async skipQuestion({ _id, scope, dep, process, level }) {
+        const questions = await this.aggregate([
           {
             $match: {
               _id: {
