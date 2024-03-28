@@ -1,7 +1,15 @@
 import express from "express";
-import { generateQuestions } from "../controllers/question.mjs";
+import {
+  generateQuestions,
+  passedQuestion,
+  skipQuestion,
+} from "../controllers/question.mjs";
 import { verifyToken } from "../middlewares/auth/verifyToken.mjs";
 
 export const questionRoutes = express.Router();
 
-questionRoutes.use(verifyToken).post("/generate", generateQuestions);
+questionRoutes
+  .use(verifyToken)
+  .post("/generate", generateQuestions)
+  .post("/skip", skipQuestion)
+  .post("/passed/:questionID", passedQuestion);

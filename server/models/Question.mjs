@@ -82,10 +82,10 @@ const questionSchema = new Schema(
           {
             $project: {
               question: {
+                _id: 1,
                 scope: 1,
                 inCharge: {
                   fullName: 1,
-                  email: 1,
                 },
                 content: 1,
                 process: 1,
@@ -105,7 +105,7 @@ const questionSchema = new Schema(
           {
             $match: {
               _id: {
-                $ne: ObjectId(_id),
+                $ne: new ObjectId(_id),
               },
               scope: scope,
               process: process,
@@ -116,6 +116,44 @@ const questionSchema = new Schema(
           {
             $sort: {
               lastTimeAudit: -1,
+              hasIssue: 1,
+            },
+          },
+          {
+            $lookup: {
+              from: "users",
+              let: {
+                inChargeIds: "$inCharge",
+              },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $in: [
+                        {
+                          $toString: "$_id",
+                        },
+                        "$$inChargeIds",
+                      ],
+                    },
+                  },
+                },
+              ],
+              as: "inCharge",
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              scope: 1,
+              inCharge: {
+                fullName: 1,
+              },
+              content: 1,
+              process: 1,
+              dep: 1,
+              level: 1,
+              lastTimeAudit: 1,
               hasIssue: 1,
             },
           },
