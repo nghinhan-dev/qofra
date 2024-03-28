@@ -3,21 +3,25 @@ import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import { ToastContainer } from "react-toastify";
 import "./Layout.css";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Layout({ children }) {
   return (
     <>
       <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
+        position="top-right"
+        autoClose={700}
         hideProgressBar
         newestOnTop={false}
         closeOnClick
+        toastStyle={{
+          border: "1px solid hsl(0, 0%, 100%, 40%)",
+        }}
         rtl={false}
         pauseOnFocusLoss
         draggable
-        pauseOnHover
         theme="dark"
+        pauseOnHover
       />
       <Navbar />
       {children}
