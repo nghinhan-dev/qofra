@@ -36,7 +36,7 @@ export default function Audit() {
     content = <Loading />;
   } else if (isError) {
     content = (
-      <div className="error-page">
+      <div className="noti-section">
         <p>{error.data?.message}</p>
         <Button type={"button"} onClick={() => reset()} value={"Reset Form"} />
       </div>

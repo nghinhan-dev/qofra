@@ -6,7 +6,7 @@ export default function Error() {
   console.log(error);
 
   return (
-    <div className="error-page">
+    <div className="noti-section">
       <h1>Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
       <p>
