@@ -7,16 +7,27 @@ import {
 import "./SingleQFrom.css";
 import { useSelector } from "react-redux";
 import { selectQuestionArray } from "../../lib/redux/questionSlice";
+import { useNavigate } from "react-router-dom";
 
 /* eslint-disable react/prop-types */
 export default function SingleQFrom() {
+  const navigate = useNavigate();
+
   const questions = useSelector(selectQuestionArray);
+  const [passed] = usePassedQuestionMutation();
+  const [skip] = useSkipQuestionMutation();
+
+  if (questions.length === 0) {
+    return (
+      <div className="noti-section">
+        <p>FORM COMPLETED!</p>
+        <Button value="Move to OPL" onClick={() => navigate("/opl")} />
+      </div>
+    );
+  }
+
   const { _id, dep, level, scope, content, process, lastTimeAudit } =
     questions[0];
-
-  const [passed] = usePassedQuestionMutation();
-
-  const [skip] = useSkipQuestionMutation();
 
   async function triggerMutationHandler(mutation, body) {
     try {
