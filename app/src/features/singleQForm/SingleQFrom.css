@@ -1,0 +1,52 @@
+#singleForm {
+  width: 700px;
+
+  & .sF__header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+
+    & .tag__container {
+      list-style: none;
+      display: flex;
+      gap: 8px;
+
+      & li {
+        background: var(--sub-color);
+        color: var(--highlight-color);
+        font-weight: 500;
+        padding: 0.2rem 0.25rem;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  & .sF__body {
+    margin: 2rem 1rem;
+
+    & p {
+      height: 250px;
+      background-color: var(--sub-color);
+      font-weight: 500;
+      color: var(--primary-color);
+      font-size: 1.7rem;
+      padding: 1.1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 4px var(--sub-color);
+    }
+  }
+
+  & .sF__button-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-around;
+
+    & button {
+      width: 80px;
+      font-weight: 600;
+      font-size: 1.4rem;
+    }
+  }
+}

@@ -7,7 +7,6 @@ import SingleQForm from "../../features/singleQForm/SingleQFrom";
 import "./Audit.css";
 
 export default function Audit() {
-  const [questions, setQuestions] = useState([]);
   const [department, setDepartment] = useState("");
   const [process, setProcess] = useState("");
   const [level, setLevel] = useState("");
@@ -20,13 +19,12 @@ export default function Audit() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await generateQ({
+      await generateQ({
         dep: department,
         process: process,
         level: level,
         hasIssue: false,
       }).unwrap();
-      setQuestions(result);
     } catch (error) {
       console.log("error:", error);
     }
@@ -44,7 +42,7 @@ export default function Audit() {
       </div>
     );
   } else if (isSuccess) {
-    content = <SingleQForm questions={questions} />;
+    content = <SingleQForm />;
   }
 
   return (
