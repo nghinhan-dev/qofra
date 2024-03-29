@@ -36,7 +36,7 @@ export default function Audit() {
     content = <Loading />;
   } else if (isError) {
     content = (
-      <div className="noti-section">
+      <div className="noti-section d__flex">
         <p>{error.data?.message}</p>
         <Button type={"button"} onClick={() => reset()} value={"Reset Form"} />
       </div>
@@ -48,17 +48,17 @@ export default function Audit() {
   return (
     <>
       <div className="form__genQ">
-        <form method="POST" onSubmit={onSubmit}>
-          {isUninitialized && (
+        {isUninitialized && (
+          <form method="POST" onSubmit={onSubmit}>
             <GenQuestion
               setDepartment={setDepartment}
               setProcess={setProcess}
               setLevel={setLevel}
             />
-          )}
+          </form>
+        )}
 
-          {content}
-        </form>
+        {content}
       </div>
     </>
   );

@@ -2,11 +2,11 @@ import { NavLink } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav>
+    <nav onClick={() => console.log(123)}>
       <NavLink
         to="/"
         className={({ isActive }) =>
-          isActive ? "isActive nav__item" : "nav__item"
+          isActive ? "isActive nav__item d__flex" : "nav__item d__flex"
         }
       >
         A
@@ -14,7 +14,7 @@ export default function Navbar() {
       <NavLink
         to="/opl"
         className={({ isActive }) =>
-          isActive ? "isActive nav__item" : "nav__item"
+          isActive ? "isActive nav__item d__flex" : "nav__item d__flex"
         }
       >
         O
@@ -22,7 +22,7 @@ export default function Navbar() {
       <NavLink
         to="/report"
         className={({ isActive }) =>
-          isActive ? "isActive nav__item" : "nav__item"
+          isActive ? "isActive nav__item d__flex" : "nav__item d__flex"
         }
       >
         R
@@ -30,7 +30,7 @@ export default function Navbar() {
       <NavLink
         to="/finding"
         className={({ isActive }) =>
-          isActive ? "isActive nav__item" : "nav__item"
+          isActive ? "isActive nav__item d__flex" : "nav__item d__flex"
         }
       >
         F

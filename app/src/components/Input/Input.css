@@ -3,8 +3,6 @@ label {
 }
 
 .input__container {
-  display: flex;
-  align-items: center;
   color: var(--sub-op-color);
   border: 1px solid var(--sub-op-color);
   transition: 0.4s all;
@@ -53,7 +51,7 @@ label {
     appearance: none;
     font-size: 1rem;
     font-weight: 500;
-    padding: 0.2rem;
+    padding: 0 0.2rem;
     border-color: var(--sub-color);
     box-shadow: 0 0 0 1px var(--highlight-color) !important;
 

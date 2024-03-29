@@ -16,10 +16,7 @@ nav {
   & .nav__item {
     --_size: 50px;
 
-    display: flex;
     border-radius: 4px;
-    justify-content: center;
-    align-items: center;
     background-color: var(--primary-color);
     color: var(--sub-color);
     text-decoration: none;
