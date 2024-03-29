@@ -35,7 +35,7 @@ function PersistLogin() {
     content = <Loading />;
   } else if (isError) {
     content = (
-      <div className="error-page">
+      <div className="noti-section d__flex">
         <p>{error.data?.message}</p>
         <Link to="login">Please login again</Link>
       </div>

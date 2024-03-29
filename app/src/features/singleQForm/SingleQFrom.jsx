@@ -24,7 +24,7 @@ export default function SingleQFrom() {
 
   if (questions.length === 0) {
     return (
-      <div className="noti-section">
+      <div className="noti-section d__flex">
         <p>FORM COMPLETED!</p>
         <Button value="Move to OPL" onClick={() => navigate("/opl")} />
       </div>
@@ -56,7 +56,7 @@ export default function SingleQFrom() {
         <p className="content">{content}</p>
         {hasIssue && (
           <>
-            <CreateFinding />
+            <CreateFinding createIssue={setHasIssue} />
           </>
         )}
       </div>
