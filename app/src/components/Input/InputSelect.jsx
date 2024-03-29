@@ -3,6 +3,7 @@ import Select from "react-select";
 
 export default function InputSelect({
   label,
+  hasLable = true,
   options,
   deparmentSelect,
   affectOther = false,
@@ -10,7 +11,7 @@ export default function InputSelect({
 }) {
   return (
     <div className="select__wraper">
-      <p>{`${label} :`}</p>
+      {hasLable && <p>{`${label} :`}</p>}
       <Select
         options={options}
         placeholder={`Select ${label}`}
