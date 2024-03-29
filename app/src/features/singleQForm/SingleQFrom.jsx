@@ -1,19 +1,24 @@
-import Button from "../../components/Button/Button";
-import { displayTime } from "../../utils/displayTime";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   usePassedQuestionMutation,
   useSkipQuestionMutation,
 } from "../../service/QuestionAPI";
-import "./SingleQFrom.css";
-import { useSelector } from "react-redux";
 import { selectQuestionArray } from "../../lib/redux/questionSlice";
-import { useNavigate } from "react-router-dom";
+import Button from "../../components/Button/Button";
+import CreateFinding from "../createFinding/CreateFinding";
+import { displayTime } from "../../utils/displayTime";
+import "./SingleQFrom.css";
 
 /* eslint-disable react/prop-types */
 export default function SingleQFrom() {
   const navigate = useNavigate();
+  const [hasIssue, setHasIssue] = useState(false);
 
   const questions = useSelector(selectQuestionArray);
+
+  // MUTATION HOOKS
   const [passed] = usePassedQuestionMutation();
   const [skip] = useSkipQuestionMutation();
 
@@ -38,8 +43,8 @@ export default function SingleQFrom() {
   }
 
   return (
-    <div id="singleForm">
-      <div className="sF__header">
+    <div id="singleForm" className={hasIssue ? "hasIssue" : ""}>
+      <div className="sF__header d__flex">
         <ul className="tag__container">
           <li>{scope}</li>
           <li>{process}</li>
@@ -47,31 +52,35 @@ export default function SingleQFrom() {
         <p className="time">Last time audit : {displayTime(lastTimeAudit)}</p>
       </div>
       <div className="sF__body">
-        <p>{content}</p>
+        <span className="label">Question</span>
+        <p className="content">{content}</p>
+        {hasIssue && (
+          <>
+            <CreateFinding />
+          </>
+        )}
       </div>
-      <div className="sF__button-container">
-        <Button
-          bgColor={"#22b222"}
-          onClick={() => triggerMutationHandler(passed, _id)}
-          value="Yes"
-        />
-        <Button
-          bgColor={"#b22222"}
-          // onClick={() =>
-          //   currentIndex !== questions.length - 1
-          //     ? setCurrentIndex((prevIndex) => prevIndex + 1)
-          //     : ""
-          // }
-          value="No"
-        />
-        <Button
-          bgColor={"#eaea1d"}
-          onClick={() =>
-            triggerMutationHandler(skip, { _id, scope, dep, process, level })
-          }
-          value="Skip"
-        />
-      </div>
+      {!hasIssue && (
+        <div className="sF__button-container d__flex">
+          <Button
+            bgColor={"#22b222"}
+            onClick={() => triggerMutationHandler(passed, _id)}
+            value="Yes"
+          />{" "}
+          <Button
+            bgColor={"#b22222"}
+            onClick={() => setHasIssue(true)}
+            value="No"
+          />
+          <Button
+            bgColor={"#eaea1d"}
+            onClick={() =>
+              triggerMutationHandler(skip, { _id, scope, dep, process, level })
+            }
+            value="Skip"
+          />{" "}
+        </div>
+      )}
     </div>
   );
 }
