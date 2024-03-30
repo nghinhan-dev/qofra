@@ -13,7 +13,7 @@ export default function CreateFinding({ createIssue }) {
 
   const [createFinding] = useCreateFindingMutation();
   const questions = useSelector(selectQuestionArray);
-  const { _id, inCharge, scope, process } = questions[0];
+  const { _id, inCharge } = questions[0];
 
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
@@ -32,8 +32,6 @@ export default function CreateFinding({ createIssue }) {
     formData.append("picID", selectIncharge);
     formData.append("desc", desc);
     formData.append("questionID", _id);
-    formData.append("scope", scope);
-    formData.append("process", process);
 
     try {
       await createFinding(formData);

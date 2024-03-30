@@ -15,7 +15,6 @@ export async function verifyToken(req, res, next) {
       if (err) throw createError(403, "Forbidden");
       req.user = req.user || {};
 
-      req.user.userid = decoded.user.userid;
       req.user.fullName = decoded.user.fullName;
       req.user.email = decoded.user.email;
       req.user.role = decoded.user.role;
