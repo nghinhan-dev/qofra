@@ -85,6 +85,7 @@ const questionSchema = new Schema(
                 _id: 1,
                 scope: 1,
                 inCharge: {
+                  _id: 1,
                   fullName: 1,
                 },
                 content: 1,
@@ -147,6 +148,7 @@ const questionSchema = new Schema(
               _id: 1,
               scope: 1,
               inCharge: {
+                _id: 1,
                 fullName: 1,
               },
               content: 1,
