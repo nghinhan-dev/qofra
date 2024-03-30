@@ -9,10 +9,7 @@ const findingSchema = new Schema({
   },
   foundDate: Date,
   dueDate: Date,
-  reporter: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
+  reporter: String,
   personInCharge: {
     type: Schema.Types.ObjectId,
     ref: "User",
