@@ -1,5 +1,4 @@
 export function displayTime(utcTimeString) {
-  console.log("utcTimeString:", utcTimeString);
   let str = utcTimeString.toString();
 
   const date = new Date(str);

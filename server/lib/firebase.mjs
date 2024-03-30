@@ -1,10 +1,7 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { v4 as uuidv4 } from "uuid";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAgjt3oYpKrEVh5-aEOKtS-EeXwQYI1M3A",
   authDomain: "qofra-sw.firebaseapp.com",
@@ -26,15 +23,13 @@ const storage = getStorage(app, "gs://qofra-sw.appspot.com");
 export async function uploadImages(files) {
   return await Promise.allSettled(
     files.map(async (file) => {
+      const uid = uuidv4();
+
       try {
         // Resize and save the image using sharp
-        await uploadBytes(
-          ref(storage, `${file.originalname}`),
-          file.buffer,
-          metadata
-        );
+        await uploadBytes(ref(storage, `${uid}`), file.buffer, metadata);
 
-        const url = await getDownloadURL(ref(storage, `${file.originalname}`));
+        const url = await getDownloadURL(ref(storage, `${uid}`));
         return url;
       } catch (error) {
         console.log("error:", error);
