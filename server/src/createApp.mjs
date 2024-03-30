@@ -5,7 +5,11 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { useRoutes } from "./useRoutes.mjs";
 import { connectDB } from "../lib/mongoose.mjs";
-import { sessionsConfig, corsConfig } from "./config.mjs";
+
+const corsConfig = {
+  origin: "http://localhost:3000",
+  credentials: true,
+};
 
 export async function createApp(httpServer) {
   await connectDB();
@@ -14,7 +18,6 @@ export async function createApp(httpServer) {
 
   app.use(helmet());
   app.use(cors(corsConfig));
-  app.use(sessionsConfig);
 
   useRoutes(app);
 
