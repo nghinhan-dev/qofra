@@ -5,7 +5,7 @@ import { useCreateFindingMutation } from "../../service/FindingAPI";
 import { selectQuestionArray } from "../../lib/redux/questionSlice";
 import { useSelector } from "react-redux";
 
-export default function CreateFinding() {
+export default function CreateFinding({ createIssue }) {
   // FORM STATE
   const [desc, setDesc] = useState("");
   const [selectIncharge, setSelectedIncharge] = useState("");
@@ -13,7 +13,7 @@ export default function CreateFinding() {
 
   const [createFinding] = useCreateFindingMutation();
   const questions = useSelector(selectQuestionArray);
-  const { _id, inCharge } = questions[0];
+  const { _id, inCharge, scope, process } = questions[0];
 
   const handleFileChange = (e) => {
     setSelectedFiles(Array.from(e.target.files));
@@ -26,15 +26,19 @@ export default function CreateFinding() {
 
     // Append each selected file to FormData
     selectedFiles.forEach((file) => {
-      formData.append("findingImage", file);
+      formData.append("findingImages", file);
     });
 
-    formData.append("inCharge", selectIncharge);
+    formData.append("picID", selectIncharge);
     formData.append("desc", desc);
     formData.append("questionID", _id);
+    formData.append("scope", scope);
+    formData.append("process", process);
 
     try {
       await createFinding(formData);
+
+      createIssue(() => false);
     } catch (error) {
       console.error(error);
     }
@@ -42,7 +46,7 @@ export default function CreateFinding() {
 
   return (
     <>
-      <form onSubmit={submitCreateFinding}>
+      <form onSubmit={submitCreateFinding} encType="multipart/form-data">
         <span className="label">Description</span>
         <textarea
           onChange={(e) => setDesc(e.target.value)}
@@ -55,7 +59,7 @@ export default function CreateFinding() {
         <div className="d__flex">
           <input
             type="file"
-            name="findingImage"
+            name="findingImages"
             onChange={handleFileChange}
             multiple
           />
