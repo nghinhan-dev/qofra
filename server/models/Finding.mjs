@@ -9,11 +9,23 @@ const findingSchema = new Schema({
   },
   foundDate: Date,
   dueDate: Date,
-  reporter: String,
-  personInCharge: String,
+  reporter: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  personInCharge: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   desc: String,
   images: [String],
-  status: String,
+  status: {
+    type: String,
+    enum: {
+      values: ["Ongoing", "Orverdue", "Done"],
+      message: "{VALUE} is not supported",
+    },
+  },
 });
 
 const Finding = new mongoose.model("Finding", findingSchema);
