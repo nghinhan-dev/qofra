@@ -9,5 +9,4 @@ export const findingRoutes = express.Router();
 findingRoutes
   .use(verifyToken)
   .post("/create", upload.array("findingImages"), fileValidate, createFinding)
-  .get("/getImages", getFindings)
-  .get("/finding/:findingID", getFindings);
+  .get("/", getFindings);

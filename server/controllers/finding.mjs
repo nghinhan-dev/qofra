@@ -12,9 +12,11 @@ export async function createFinding(req, res, next) {
     const { questionID, picID, desc } = req.body;
     const foundDate = new Date();
 
+    // pic = person in charge
     const pic = await User.findById(picID);
     if (!pic) throw createError(404, "Cannot find person in charge");
 
+    // update question state
     const question = await Question.findByIdAndUpdate(
       questionID,
       {
@@ -25,6 +27,7 @@ export async function createFinding(req, res, next) {
     );
     if (!question) throw createError(404, "Cannot find question");
 
+    // upload images to cloud
     let results;
     if (req.files.length !== 0) {
       results = await uploadImages(req.files);
@@ -34,6 +37,7 @@ export async function createFinding(req, res, next) {
 
     const dueDate = dueDateCalculator(Date.now(), question.scope);
 
+    // create new finding
     const newFinding = new Finding({
       question: questionID,
       foundDate: foundDate,
@@ -45,6 +49,11 @@ export async function createFinding(req, res, next) {
       status: "Ongoing",
     });
 
+    // add task to p.i.c
+    pic.findings.push(newFinding._id);
+    await pic.save();
+
+    // send notify email
     await sendMail(
       req.user.fullName,
       pic,
@@ -62,13 +71,23 @@ export async function createFinding(req, res, next) {
 
 export async function getFindings(req, res, next) {
   try {
-    const findingId = req.params.findingID;
+    const rawFindings = await Finding.find(
+      {},
+      "-images -__v -foundDate "
+    ).exec();
+    const findings = await Finding.populate(rawFindings, [
+      {
+        path: "question",
+        select: "process -_id",
+      },
+      {
+        path: "personInCharge",
+        select: "fullName -_id",
+      },
+    ]);
 
-    const finding = await Finding.findById(findingId);
-
-    res.send({ finding: finding });
+    res.status(200).send(findings);
   } catch (error) {
-    console.log("error:", error);
     next(error);
   }
 }
