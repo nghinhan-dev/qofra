@@ -1,0 +1,30 @@
+.table__container {
+  margin-top: 3rem;
+  border-radius: 8px;
+  border: 1px solid var(--sub-op-color);
+  /* overflow-x: scroll; */
+
+  & table {
+    color: var(--sub-color);
+    border-collapse: collapse;
+    width: 1140px;
+    font-size: 0.9rem;
+
+    & thead {
+      font-weight: 600;
+      color: var(--txt-op-color);
+    }
+
+    & tbody tr:last-child {
+      border: none;
+    }
+  }
+
+  & td {
+    padding: 0.7rem 1rem;
+  }
+
+  & tr {
+    border-bottom: 1px solid var(--sub-op-color);
+  }
+}
