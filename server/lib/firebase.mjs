@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { v4 as uuidv4 } from "uuid";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
@@ -23,13 +22,13 @@ const storage = getStorage(app, "gs://qofra-sw.appspot.com");
 export async function uploadImages(files) {
   return await Promise.allSettled(
     files.map(async (file) => {
-      const uid = uuidv4();
+      const fileName = `${file.originalname}-${Date.now()}`;
 
       try {
         // Resize and save the image using sharp
-        await uploadBytes(ref(storage, `${uid}`), file.buffer, metadata);
+        await uploadBytes(ref(storage, `${fileName}`), file.buffer, metadata);
 
-        const url = await getDownloadURL(ref(storage, `${uid}`));
+        const url = await getDownloadURL(ref(storage, `${fileName}`));
         return url;
       } catch (error) {
         console.log("error:", error);
