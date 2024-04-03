@@ -34,9 +34,7 @@ nav {
 }
 
 footer {
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
+  margin-top: 1rem;
   font-size: 0.6rem;
   color: var(--sub-color);
   text-align: center;

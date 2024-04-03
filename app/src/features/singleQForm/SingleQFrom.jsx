@@ -8,7 +8,7 @@ import {
 import { selectQuestionArray } from "../../lib/redux/questionSlice";
 import Button from "../../components/Button/Button";
 import CreateFinding from "../createFinding/CreateFinding";
-import { displayTime } from "../../utils/displayTime";
+import { displayTime } from "../../utils/coverter";
 import "./SingleQFrom.css";
 
 /* eslint-disable react/prop-types */

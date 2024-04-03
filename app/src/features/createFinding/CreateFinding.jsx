@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import InputSelect from "../../components/Input/InputSelect";
+import Button from "../../components/Button/Button";
 import { useCreateFindingMutation } from "../../service/FindingAPI";
 import { selectQuestionArray } from "../../lib/redux/questionSlice";
 import { useSelector } from "react-redux";
@@ -58,6 +59,7 @@ export default function CreateFinding({ createIssue }) {
           <input
             type="file"
             name="findingImages"
+            accept=".jpg, .png, .jpeg"
             onChange={handleFileChange}
             multiple
           />
@@ -71,7 +73,15 @@ export default function CreateFinding({ createIssue }) {
             setState={setSelectedIncharge}
           />
         </div>
-        <button type="submit">Submit</button>
+        <div className="sF__button-container d__flex">
+          <Button type="submit" value="Submit" />
+          <Button
+            type="button"
+            value="Cancel"
+            onClick={() => createIssue(() => false)}
+            bgColor={"#b22222"}
+          />
+        </div>
       </form>
     </>
   );

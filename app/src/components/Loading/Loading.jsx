@@ -1,12 +1,12 @@
-import { RotateCw } from "lucide-react";
+import "./Loading.css";
 
 export default function Loading() {
   return (
-    <div id="error-page">
-      <h1>
-        <RotateCw />
-        Loading
-      </h1>
+    <div className="noti-section d__flex loading">
+      <div className="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
     </div>
   );
 }
