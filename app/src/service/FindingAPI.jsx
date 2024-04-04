@@ -40,9 +40,17 @@ export const findingApiSlice = apiSlice.injectEndpoints({
         url: "/finding",
       }),
     }),
+    getDetailFinding: builder.query({
+      query: (findingID) => ({
+        url: `/finding/${findingID}`,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useCreateFindingMutation, useGetFindingsQuery } =
-  findingApiSlice;
+export const {
+  useCreateFindingMutation,
+  useGetFindingsQuery,
+  useGetDetailFindingQuery,
+} = findingApiSlice;

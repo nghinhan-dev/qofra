@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { displayTime, abbreviatedName } from "../../utils/coverter";
 import InputSelect from "../../components/Input/InputSelect";
+import { Link } from "react-router-dom";
 import Icons from "../../components/Icon/Icon";
 import "./Table.css";
 import { useState } from "react";
@@ -68,6 +69,7 @@ export default function Table({ data }) {
 }
 
 function Row({
+  _id,
   question,
   reporter,
   dueDate,
@@ -99,7 +101,9 @@ function Row({
       <td>{switchStatus(status)}</td>
       <td>
         <p>
-          <Icons name={"SendHorizontal"} size={15} />
+          <Link to={`finding/${_id}`}>
+            <Icons name={"SendHorizontal"} size={15} />
+          </Link>
         </p>
       </td>
     </tr>

@@ -28,12 +28,12 @@ export default function Navbar() {
         R
       </NavLink>
       <NavLink
-        to="/finding"
+        to="/question"
         className={({ isActive }) =>
           isActive ? "isActive nav__item d__flex" : "nav__item d__flex"
         }
       >
-        F
+        Q
       </NavLink>
     </nav>
   );

@@ -4,7 +4,8 @@ import Audit from "../pages/Audit/Audit";
 import Login from "../pages/Login/Login";
 import Opl from "../pages/Opl/Opl";
 import Report from "../pages/Report/Report";
-import Finding from "../pages/Finding/Finding";
+import Question from "../pages/Question/Question";
+import Finding from "../pages/Opl/Finding";
 import Error from "../pages/Error/Error";
 import PersistLogin from "../features/auth/PersistLogin";
 
@@ -28,7 +29,11 @@ const router = createBrowserRouter([
             element: <Opl />,
           },
           {
-            path: "finding",
+            path: "question",
+            element: <Question />,
+          },
+          {
+            path: "opl/finding/:findingID",
             element: <Finding />,
           },
         ],

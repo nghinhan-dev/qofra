@@ -91,3 +91,27 @@ export async function getFindings(req, res, next) {
     next(error);
   }
 }
+
+export async function getDetailFinding(req, res, next) {
+  try {
+    const findingID = req.params.findingID;
+
+    const finding = await Finding.findById(findingID).populate([
+      {
+        path: "question",
+      },
+      {
+        path: "personInCharge",
+      },
+    ]);
+
+    if (!finding) throw createError(404, "Cannot find Finding with given id");
+
+    res.status(200).send({
+      message: "Success",
+      finding: finding,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
