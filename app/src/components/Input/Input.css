@@ -47,12 +47,13 @@ label {
       color: var(--sub-color) !important;
     }
 
+    color: var(--txt-color);
     background-color: var(--primary-color);
     appearance: none;
     font-size: 1rem;
     font-weight: 500;
     padding: 0 0.2rem;
-    border-color: var(--sub-color);
+    border-color: var(--txt-color);
     box-shadow: 0 0 0 1px var(--highlight-color) !important;
 
     &:hover {

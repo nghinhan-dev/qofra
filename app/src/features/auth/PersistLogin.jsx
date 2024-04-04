@@ -42,11 +42,13 @@ function PersistLogin() {
     );
   } else if (isSuccess) {
     content = <Outlet />;
+  } else if (isUninitialized) {
+    content = <Outlet />;
   }
 
   return (
     <>
-      {isUninitialized && <Loading />} <Layout>{content}</Layout>
+      <Layout>{content}</Layout>
     </>
   );
 }

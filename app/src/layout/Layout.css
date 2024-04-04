@@ -15,7 +15,6 @@ nav {
 
   & .nav__item {
     --_size: 50px;
-
     border-radius: 4px;
     background-color: var(--primary-color);
     color: var(--sub-color);
