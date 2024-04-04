@@ -7,54 +7,47 @@ import { useState } from "react";
 
 export default function Table({ data }) {
   const [selectPerson, setSelectPerson] = useState("");
-  const options = data.map((finding) => ({
-    value: finding.personInCharge.fullName,
-    label: abbreviatedName(finding.personInCharge.fullName),
-  }));
+  const options = getPICArray(data);
 
   return (
     <>
       <section className="d__flex table">
-        <h1>Opening Point List</h1>
-        <div className="filter--container">
-          <InputSelect
-            options={options}
-            label={`P.I.C`}
-            hasLable={false}
-            isSearchable={false}
-            setState={setSelectPerson}
-          />
+        <div className="table--header">
+          <h1>Opening Point List</h1>
+          <div className="filter--container d__flex">
+            <InputSelect
+              options={options}
+              label={`P.I.C`}
+              hasLable={false}
+              isSearchable={false}
+              setState={setSelectPerson}
+            />
+          </div>
         </div>
         <div className="table__container ">
           <table>
             <thead>
               <tr>
-                <td>
+                <td width={"11%"}>
                   <p>Process</p>
                 </td>
-                <td width={"20%"}>
+                <td width={"25%"}>
                   <p>Description</p>
                 </td>
-                <td>
+                <td width={"11%"}>
                   <p>Due Date</p>
                 </td>
-                <td>
+                <td width={"11%"}>
                   <p>Reporter</p>
                 </td>
-                <td>
-                  <div className="d__flex">
-                    <p className="d__flex sort-cell">
-                      P.I.C
-                      <Icons name={"ChevronsUpDown"} size={15} />
-                    </p>
-                  </div>
-                </td>
-                <td width={"20%"}>
+                <td width={"11%"}>P.I.C</td>
+                <td width={"24%"}>
                   <p>Actions</p>
                 </td>
-                <td>
+                <td width={"7%"}>
                   <p>Status</p>
                 </td>
+                <td></td>
               </tr>
             </thead>
             <tbody>
@@ -63,7 +56,6 @@ export default function Table({ data }) {
                   selectPerson.length === 0 ||
                   finding.personInCharge.fullName === selectPerson
                 ) {
-                  console.log(finding);
                   return <Row key={finding._id} {...finding} />;
                 }
               })}
@@ -144,4 +136,21 @@ function switchStatus(status) {
     default:
       break;
   }
+}
+
+function getPICArray(data) {
+  const map = new Map();
+  data.forEach((finding) => {
+    map.set(finding.personInCharge.fullName, {
+      value: finding.personInCharge.fullName,
+      label: abbreviatedName(finding.personInCharge.fullName),
+    });
+  });
+
+  // eslint-disable-next-line no-unused-vars
+  const array = Array.from(map, ([name, value]) => {
+    return value;
+  });
+
+  return array;
 }
