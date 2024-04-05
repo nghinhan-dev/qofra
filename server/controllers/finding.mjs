@@ -107,10 +107,7 @@ export async function getDetailFinding(req, res, next) {
 
     if (!finding) throw createError(404, "Cannot find Finding with given id");
 
-    res.status(200).send({
-      message: "Success",
-      finding: finding,
-    });
+    res.status(200).send(finding);
   } catch (error) {
     next(error);
   }
