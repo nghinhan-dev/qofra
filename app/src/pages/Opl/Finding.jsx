@@ -1,8 +1,9 @@
 import Button from "../../components/Button/Button";
 import Loading from "../../components/Loading/Loading";
+import Icon from "../../components/Icon/Icon";
 import { useGetDetailFindingQuery } from "../../service/FindingAPI";
 import { displayTime, displayStatus } from "../../utils/coverter";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import "./Finding.css";
 
 export default function Finding() {
@@ -39,6 +40,11 @@ export default function Finding() {
 
     content = (
       <>
+        <div className="finding--nav d__flex">
+          <Link to={"/opl"} className="d__flex">
+            <Icon name={"ArrowLeftFromLine"} /> Back to OPL
+          </Link>
+        </div>
         <div className="finding--container d__flex">
           <div className="finding--row d__flex">
             <p className="key">Found date</p>
