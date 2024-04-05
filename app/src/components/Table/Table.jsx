@@ -1,5 +1,9 @@
 /* eslint-disable react/prop-types */
-import { displayTime, abbreviatedName } from "../../utils/coverter";
+import {
+  displayTime,
+  abbreviatedName,
+  displayStatus,
+} from "../../utils/coverter";
 import InputSelect from "../../components/Input/InputSelect";
 import { Link } from "react-router-dom";
 import Icons from "../../components/Icon/Icon";
@@ -41,7 +45,9 @@ export default function Table({ data }) {
                 <td width={"11%"}>
                   <p>Reporter</p>
                 </td>
-                <td width={"11%"}>P.I.C</td>
+                <td width={"11%"}>
+                  <p>P.I.C</p>
+                </td>
                 <td width={"24%"}>
                   <p>Actions</p>
                 </td>
@@ -98,7 +104,9 @@ function Row({
       <td>
         <p>{action}</p>
       </td>
-      <td>{switchStatus(status)}</td>
+      <td>
+        <div className="d__flex">{displayStatus(status)}</div>
+      </td>
       <td>
         <p>
           <Link to={`finding/${_id}`}>
@@ -108,38 +116,6 @@ function Row({
       </td>
     </tr>
   );
-}
-
-function switchStatus(status) {
-  switch (status) {
-    case "Ongoing":
-      return (
-        <div className="d__flex">
-          <p className="status d__flex status__ongoing">
-            <Icons name={"Timer"} size={13} /> Ongoing
-          </p>
-        </div>
-      );
-    case "Done":
-      return (
-        <div className="d__flex">
-          <p className="status d__flex status__done">
-            <Icons name={"CircleCheck"} size={13} /> Complete
-          </p>
-        </div>
-      );
-    case "Overdue":
-      return (
-        <div className="d__flex">
-          <p className="status d__flex status__overdue">
-            <Icons name={"OctagonX"} size={13} />
-            Overdue
-          </p>
-        </div>
-      );
-    default:
-      break;
-  }
 }
 
 function getPICArray(data) {

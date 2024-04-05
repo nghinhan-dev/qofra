@@ -25,7 +25,7 @@ section.table {
     justify-self: flex-start;
     margin-top: 3rem;
     border-radius: 8px;
-    width: 80%;
+    width: 1140px;
     overflow: hidden;
     border: 1px solid var(--sub-op-color);
 
