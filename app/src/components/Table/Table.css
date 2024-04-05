@@ -33,25 +33,6 @@ section.table {
       justify-content: flex-start;
     }
 
-    & .status {
-      font-size: 0.8rem;
-      padding: 0.4rem 0.3rem;
-      justify-content: flex-start;
-      width: 85%;
-      color: var(--primary-color);
-      font-weight: 600;
-    }
-
-    & .status__ongoing {
-      background: #eaea1d;
-    }
-    & .status__done {
-      background: #22b222;
-    }
-    & .status__overdue {
-      background: #b22222;
-    }
-
     & .sort-cell,
     .status {
       gap: 4px;

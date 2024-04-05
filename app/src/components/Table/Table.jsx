@@ -33,7 +33,7 @@ export default function Table({ data }) {
           <table>
             <thead>
               <tr>
-                <td width={"11%"}>
+                <td width={"10%"}>
                   <p>Process</p>
                 </td>
                 <td width={"25%"}>
@@ -51,7 +51,7 @@ export default function Table({ data }) {
                 <td width={"24%"}>
                   <p>Actions</p>
                 </td>
-                <td width={"7%"}>
+                <td width={"8%"}>
                   <p>Status</p>
                 </td>
                 <td></td>

@@ -6,3 +6,16 @@ form {
     color: var(--sub-color);
   }
 }
+
+textarea {
+  color: var(--primary-color);
+  padding: 0.5rem 0.8rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  outline: none;
+  resize: none;
+  width: 100%;
+  border: none;
+  box-shadow: 0 0 4px var(--sub-color);
+  border-radius: 8px;
+}

@@ -30,3 +30,43 @@ body {
 a {
   color: var(--sub-color);
 }
+.status {
+  font-size: 0.8rem;
+  padding: 0.4rem 0.3rem;
+  justify-content: flex-start;
+  gap: 4px;
+  width: 85%;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+.status__ongoing {
+  background: #eaea1d;
+}
+.status__done {
+  background: #22b222;
+}
+.status__overdue {
+  background: #b22222;
+}
+
+.tag__container {
+  list-style: none;
+  display: flex;
+  gap: 8px;
+
+  & li {
+    background: var(--sub-color);
+    color: var(--highlight-color);
+    font-weight: 500;
+    padding: 0.2rem 0.25rem;
+    border-radius: 4px;
+  }
+}
+
+section {
+  min-height: 100dvh;
+}
+
+.time {
+  font-style: italic;
+}
