@@ -65,6 +65,9 @@ a {
 
 section {
   min-height: 100dvh;
+  width: 1440px;
+  margin: 0 auto;
+  flex-direction: column;
 }
 
 .time {

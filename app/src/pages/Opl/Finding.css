@@ -1,5 +1,6 @@
 .finding--container {
   flex-direction: column;
+  width: 100%;
   gap: 1.5rem;
   border: 1px solid var(--sub-op-color);
   border-radius: 8px;
@@ -12,6 +13,7 @@
   }
 
   & .key {
+    flex-shrink: 0;
     width: 150px;
     color: var(--txt-op-color);
   }
@@ -29,5 +31,17 @@
       width: 100%;
       padding: 0.7rem 0.5rem;
     }
+  }
+}
+
+.finding--nav {
+  font-weight: 600;
+  width: 100%;
+  justify-content: flex-start !important;
+  margin-bottom: 1rem;
+
+  & a {
+    gap: 10px;
+    text-decoration: none;
   }
 }
