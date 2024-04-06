@@ -35,7 +35,7 @@ a {
   padding: 0.4rem 0.3rem;
   justify-content: flex-start;
   gap: 4px;
-  width: 85%;
+  width: fit-content;
   color: var(--primary-color);
   font-weight: 600;
 }
@@ -65,7 +65,7 @@ a {
 
 section {
   min-height: 100dvh;
-  width: 1440px;
+  width: 1140px;
   margin: 0 auto;
   flex-direction: column;
 }

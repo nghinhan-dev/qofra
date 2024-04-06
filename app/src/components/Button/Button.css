@@ -8,4 +8,9 @@ button {
   border: none;
   cursor: pointer;
   width: fit-content;
+
+  &:disabled {
+    cursor: not-allowed;
+    filter: blur(0.5px);
+  }
 }

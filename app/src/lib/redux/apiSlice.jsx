@@ -40,6 +40,7 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReAuth,
+  tagTypes: ["Finding"],
   // eslint-disable-next-line no-unused-vars
   endpoints: () => ({}),
 });

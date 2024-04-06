@@ -105,9 +105,28 @@ export async function getDetailFinding(req, res, next) {
       },
     ]);
 
+    const isPIC = req.user.fullName === finding.personInCharge.fullName;
+
     if (!finding) throw createError(404, "Cannot find Finding with given id");
 
-    res.status(200).send(finding);
+    res.status(200).send({
+      finding,
+      isPIC,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function resolveFinding(req, res, next) {
+  try {
+    const findingID = req.params.findingID;
+    const action = req.body.action;
+    const finding = await Finding.findByIdAndUpdate(findingID, {
+      action: action,
+    });
+
+    res.status(200).send({ message: "Success" });
   } catch (error) {
     next(error);
   }

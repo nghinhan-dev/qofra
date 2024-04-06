@@ -18,4 +18,11 @@ textarea {
   border: none;
   box-shadow: 0 0 4px var(--sub-color);
   border-radius: 8px;
+
+  &:disabled {
+    background: var(--sub-op-color);
+    box-shadow: 0 0 1px var(--txt-op-color);
+    cursor: not-allowed;
+    color: var(--sub-color);
+  }
 }

@@ -1,15 +1,30 @@
 import Button from "../../components/Button/Button";
 import Loading from "../../components/Loading/Loading";
 import Icon from "../../components/Icon/Icon";
-import { useGetDetailFindingQuery } from "../../service/FindingAPI";
+import {
+  useGetDetailFindingQuery,
+  useResolveFindingMutation,
+} from "../../service/FindingAPI";
 import { displayTime, displayStatus } from "../../utils/coverter";
 import { useParams, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./Finding.css";
+import { useState } from "react";
 
 export default function Finding() {
+  const [actionText, setActionText] = useState("");
   const { findingID } = useParams();
   const { data, isSuccess, isLoading, isError, error, refetch } =
     useGetDetailFindingQuery(findingID);
+  const [resolve] = useResolveFindingMutation();
+
+  const resolveHandler = async (_id) => {
+    try {
+      await resolve({ _id, action: actionText });
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
 
   let content;
   if (isLoading) {
@@ -26,17 +41,18 @@ export default function Finding() {
       </div>
     );
   } else if (isSuccess) {
+    const { isPIC, finding } = data;
     const {
       _id,
       desc,
       dueDate,
       foundDate,
       images,
-      // personInCharge,
+      action,
       question,
       reporter,
       status,
-    } = data;
+    } = finding;
 
     content = (
       <>
@@ -94,11 +110,25 @@ export default function Finding() {
           <div className="finding--row d__flex">
             <p className="key">Action</p>
             <div>
-              <textarea name="actionForFinding"></textarea>
+              <textarea
+                defaultValue={action}
+                disabled={!isPIC}
+                name="actionForFinding"
+                onChange={(e) => setActionText(() => e.target.value)}
+              ></textarea>
             </div>
           </div>
           <div className="d__flex">
-            <Button value="Add action" type="button" bgColor="#eaea1d" />
+            <Button
+              onClick={() =>
+                !isPIC
+                  ? toast.warning("Only P.I.C can modify action")
+                  : resolveHandler(_id)
+              }
+              value="Add action"
+              type="button"
+              bgColor="#eaea1d"
+            />
           </div>
         </div>
       </>

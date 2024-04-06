@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import Icons from "../../components/Icon/Icon";
+import InputSelect from "../../components/Input/InputSelect";
 import {
   displayTime,
   abbreviatedName,
   displayStatus,
 } from "../../utils/coverter";
-import InputSelect from "../../components/Input/InputSelect";
-import { Link } from "react-router-dom";
-import Icons from "../../components/Icon/Icon";
 import "./Table.css";
-import { useState } from "react";
 
 export default function Table({ data }) {
   const [selectPerson, setSelectPerson] = useState("");

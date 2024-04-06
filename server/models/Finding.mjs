@@ -10,7 +10,7 @@ const findingSchema = new Schema({
   foundDate: Date,
   dueDate: Date,
   completionDate: Date,
-  actions: String,
+  action: String,
   reporter: String,
   personInCharge: {
     type: Schema.Types.ObjectId,
