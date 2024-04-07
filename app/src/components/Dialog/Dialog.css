@@ -1,0 +1,83 @@
+dialog {
+  z-index: 10;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 1.5rem 2rem;
+  transform: translateX(-50%) translateY(-50%);
+  border: none;
+  background: var(--highlight-color);
+  box-shadow: var(--box-shadow);
+  height: 350px;
+  width: 500px;
+
+  &::backdrop {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  & * {
+    font-size: 1.1rem;
+  }
+
+  & button {
+    gap: 3px;
+    margin-left: 10px;
+    font-weight: 600;
+  }
+}
+
+.dialog--container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+}
+
+.dialog--body {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  width: 100%;
+  border-bottom: 1px solid black;
+
+  & .dialog--value {
+    width: 100%;
+    flex-grow: auto;
+
+    & label {
+      font-weight: bold;
+      line-height: 1.1;
+      display: grid;
+      grid-template-columns: 1em auto;
+      gap: 0.5em;
+      margin-bottom: 15px;
+    }
+  }
+
+  & .dialog--key {
+    border-right: 1px solid black;
+    height: 100%;
+    font-weight: 600;
+    padding-right: 10px;
+
+    & p {
+      text-transform: capitalize;
+      margin-bottom: 1rem;
+      background: var(--sub-color);
+      padding: 4px 6px;
+      cursor: pointer;
+
+      &.isActive {
+        background: var(--primary-color);
+        color: var(--sub-color);
+      }
+    }
+  }
+}
+
+.dialog--footer button:last-child {
+  color: white !important;
+}
