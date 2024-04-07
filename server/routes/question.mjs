@@ -1,6 +1,7 @@
 import express from "express";
 import {
   generateQuestions,
+  paginate,
   passedQuestion,
   skipQuestion,
 } from "../controllers/question.mjs";
@@ -12,4 +13,5 @@ questionRoutes
   .use(verifyToken)
   .post("/generate", generateQuestions)
   .post("/skip", skipQuestion)
-  .post("/passed/:questionID", passedQuestion);
+  .post("/passed/:questionID", passedQuestion)
+  .get("/", paginate);

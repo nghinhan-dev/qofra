@@ -177,6 +177,13 @@ const questionSchema = new Schema(
 
         return question;
       },
+      paginate(currentPage = 1) {
+        const question = this.find({})
+          .skip(100 * (currentPage - 1))
+          .limit(100);
+
+        return question;
+      },
     },
   }
 );

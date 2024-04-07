@@ -35,3 +35,17 @@ export async function passedQuestion(req, res, next) {
     next(error);
   }
 }
+
+export async function paginate(req, res, next) {
+  try {
+    const page = req.query.page;
+    const questions = await Question.paginate(page);
+
+    res.status(200).send({
+      length: questions.length,
+      result: questions,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
