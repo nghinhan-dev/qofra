@@ -4,7 +4,7 @@ import { addQ, nextQ, skipQ } from "../lib/redux/questionSlice";
 
 export const questionApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getQuestions: builder.mutation({
+    getAuditQuestions: builder.mutation({
       query: (fields) => ({
         url: "/question/generate",
         method: "POST",
@@ -85,12 +85,18 @@ export const questionApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    getQuestions: builder.query({
+      query: (page) => ({
+        url: `/question?page=${page}`,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
 export const {
-  useGetQuestionsMutation,
+  useGetAuditQuestionsMutation,
   usePassedQuestionMutation,
   useSkipQuestionMutation,
+  useGetQuestionsQuery,
 } = questionApiSlice;

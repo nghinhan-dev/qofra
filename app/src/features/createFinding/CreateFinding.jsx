@@ -3,7 +3,7 @@ import { useState } from "react";
 import InputSelect from "../../components/Input/InputSelect";
 import Button from "../../components/Button/Button";
 import { useCreateFindingMutation } from "../../service/FindingAPI";
-import { selectQuestionArray } from "../../lib/redux/questionSlice";
+import { selectAuditQuestionay } from "../../lib/redux/questionSlice";
 import { useSelector } from "react-redux";
 
 export default function CreateFinding({ createIssue }) {
@@ -13,7 +13,7 @@ export default function CreateFinding({ createIssue }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const [createFinding] = useCreateFindingMutation();
-  const questions = useSelector(selectQuestionArray);
+  const questions = useSelector(selectAuditQuestionay);
   const { _id, inCharge } = questions[0];
 
   const handleFileChange = (e) => {

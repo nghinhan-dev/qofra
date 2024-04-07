@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGetQuestionsMutation } from "../../service/QuestionAPI";
+import { useGetAuditQuestionsMutation } from "../../service/QuestionAPI";
 import Loading from "../../components/Loading/Loading";
 import Button from "../../components/Button/Button";
 import GenQuestion from "../../features/genQForm/GenQuestionForm";
@@ -14,7 +14,7 @@ export default function Audit() {
   const [
     generateQ,
     { isLoading, isUninitialized, isSuccess, isError, error, reset },
-  ] = useGetQuestionsMutation();
+  ] = useGetAuditQuestionsMutation();
 
   const onSubmit = async (e) => {
     e.preventDefault();

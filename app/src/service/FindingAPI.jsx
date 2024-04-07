@@ -41,7 +41,6 @@ export const findingApiSlice = apiSlice.injectEndpoints({
         url: "/finding",
       }),
       providesTags: (result) => {
-        console.log(result);
         return result
           ? [...result.map(({ id }) => ({ type: "Finding", id })), "Finding"]
           : ["Finding"];

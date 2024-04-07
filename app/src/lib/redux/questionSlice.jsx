@@ -3,25 +3,25 @@ import { createSlice } from "@reduxjs/toolkit";
 const questionSlice = createSlice({
   name: "question",
   initialState: {
-    questionArr: [],
+    auditQuestion: [],
   },
   reducers: {
     nextQ: (state) => {
-      state.questionArr = state.questionArr.slice(1);
+      state.auditQuestion = state.auditQuestion.slice(1);
     },
     skipQ: (state, action) => {
       const newQuestion = action.payload;
 
-      state.questionArr[0] = newQuestion;
+      state.auditQuestion[0] = newQuestion;
     },
     addQ: (state, action) => {
-      const questionArr = action.payload;
+      const auditQuestion = action.payload;
 
-      state.questionArr = questionArr;
+      state.auditQuestion = auditQuestion;
     },
   },
 });
 
 export const { nextQ, skipQ, addQ } = questionSlice.actions;
-export const selectQuestionArray = (state) => state.question.questionArr;
+export const selectAuditQuestionay = (state) => state.question.auditQuestion;
 export default questionSlice.reducer;

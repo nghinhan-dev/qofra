@@ -5,7 +5,7 @@ import {
   usePassedQuestionMutation,
   useSkipQuestionMutation,
 } from "../../service/QuestionAPI";
-import { selectQuestionArray } from "../../lib/redux/questionSlice";
+import { selectAuditQuestionay } from "../../lib/redux/questionSlice";
 import Button from "../../components/Button/Button";
 import CreateFinding from "../createFinding/CreateFinding";
 import { displayTime } from "../../utils/coverter";
@@ -16,7 +16,7 @@ export default function SingleQFrom() {
   const navigate = useNavigate();
   const [hasIssue, setHasIssue] = useState(false);
 
-  const questions = useSelector(selectQuestionArray);
+  const questions = useSelector(selectAuditQuestionay);
 
   // MUTATION HOOKS
   const [passed] = usePassedQuestionMutation();
