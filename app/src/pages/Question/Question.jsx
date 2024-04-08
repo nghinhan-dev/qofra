@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetQuestionsQuery } from "../../service/QuestionAPI";
 import Dialog from "../../components/Dialog/Dialog";
-import { displayTime } from "../../utils/coverter";
+import { displayTime } from "../../utils/converter";
 import { updateQuery } from "../../lib/redux/questionSlice";
 import "./Question.css";
 

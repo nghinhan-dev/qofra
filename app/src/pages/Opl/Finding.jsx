@@ -5,7 +5,7 @@ import {
   useGetDetailFindingQuery,
   useResolveFindingMutation,
 } from "../../service/FindingAPI";
-import { displayTime, displayStatus } from "../../utils/coverter";
+import { displayTime, displayStatus } from "../../utils/converter";
 import { useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./Finding.css";

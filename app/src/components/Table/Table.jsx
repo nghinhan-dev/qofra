@@ -7,7 +7,7 @@ import {
   displayTime,
   abbreviatedName,
   displayStatus,
-} from "../../utils/coverter";
+} from "../../utils/converter";
 import "./Table.css";
 
 export default function Table({ data }) {
