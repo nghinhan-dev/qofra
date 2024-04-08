@@ -4,8 +4,10 @@ import { SlidersHorizontal } from "lucide-react";
 import Button from "../Button/Button";
 import "./Dialog.css";
 
-export default function Dialog({ options, setStateHanlder, filterState }) {
-  const [currentOptionIndex, setCurrentOptionIndex] = useState("deparment");
+export default function Dialog({ options, setStateHanlder, applyFilter }) {
+  const [currentOptionIndex, setCurrentOptionIndex] = useState(
+    Object.keys(options)[0].toString()
+  );
   const dialogRef = useRef(null);
 
   return (
@@ -29,21 +31,21 @@ export default function Dialog({ options, setStateHanlder, filterState }) {
               ))}
             </div>
             <div className="dialog--value">
-              {options[`${currentOptionIndex}`].map((label) => (
+              {options[`${currentOptionIndex}`].values.map((label) => (
                 <div key={label}>
                   <label>
                     <input
-                      checked={filterState[`${currentOptionIndex}`].includes(
-                        label
-                      )}
+                      checked={options[
+                        `${currentOptionIndex}`
+                      ].selected.includes(label)}
                       value={label}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         setStateHanlder(
                           currentOptionIndex,
                           e.target.value,
                           e.target.checked
-                        )
-                      }
+                        );
+                      }}
                       type="checkbox"
                       name="checkbox-checked"
                     />
@@ -54,8 +56,8 @@ export default function Dialog({ options, setStateHanlder, filterState }) {
             </div>
           </div>
           <div className="dialog--footer d__flex">
-            <Button value="Cancel" onClick={() => dialogRef.current.close()} />
-            <Button value="Apply" bgColor="#000" />
+            <Button value="Close" onClick={() => dialogRef.current.close()} />
+            <Button value="Apply" onClick={applyFilter} bgColor="#000" />
           </div>
         </div>
       </dialog>

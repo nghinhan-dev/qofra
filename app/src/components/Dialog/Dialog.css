@@ -69,6 +69,7 @@ dialog {
       background: var(--sub-color);
       padding: 4px 6px;
       cursor: pointer;
+      transition: 0.5 s all;
 
       &.isActive {
         background: var(--primary-color);

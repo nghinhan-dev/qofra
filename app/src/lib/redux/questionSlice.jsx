@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const questionSlice = createSlice({
   name: "question",
   initialState: {
+    searchQuery: "",
     auditQuestion: [],
   },
   reducers: {
@@ -19,9 +20,12 @@ const questionSlice = createSlice({
 
       state.auditQuestion = auditQuestion;
     },
+    updateQuery: (state, action) => {
+      state.searchQuery = action.payload;
+    },
   },
 });
 
-export const { nextQ, skipQ, addQ } = questionSlice.actions;
+export const { nextQ, skipQ, addQ, updateQuery } = questionSlice.actions;
 export const selectAuditQuestionay = (state) => state.question.auditQuestion;
 export default questionSlice.reducer;

@@ -38,8 +38,23 @@ export async function passedQuestion(req, res, next) {
 
 export async function paginate(req, res, next) {
   try {
-    const page = req.query.page;
-    const questions = await Question.paginate(page);
+    let questions;
+
+    if (Object.keys(req.query).length !== 0) {
+      const aggregateObj = Object.fromEntries(
+        Object.entries(req.query).map(([key, value]) =>
+          Array.isArray(value) ? [key, { $in: value }] : [key, value]
+        )
+      );
+
+      questions = await Question.aggregate([
+        {
+          $match: aggregateObj,
+        },
+      ]);
+    } else {
+      questions = await Question.find({}).limit(5);
+    }
 
     res.status(200).send({
       length: questions.length,

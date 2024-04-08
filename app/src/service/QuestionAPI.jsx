@@ -86,8 +86,8 @@ export const questionApiSlice = apiSlice.injectEndpoints({
       },
     }),
     getQuestions: builder.query({
-      query: (page) => ({
-        url: `/question?page=${page}`,
+      query: (query) => ({
+        url: query ? `/question${query}` : `/question`,
       }),
     }),
   }),

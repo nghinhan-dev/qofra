@@ -46,6 +46,7 @@ section.table {
     }
 
     & table {
+      width: 100%;
       color: var(--sub-color);
       border-collapse: collapse;
       font-size: 0.9rem;
