@@ -1,0 +1,32 @@
+.pagination {
+  align-items: flex-end !important;
+  align-self: flex-end;
+  flex-grow: 1;
+  margin-top: 10px;
+  color: var(--sub-color);
+  gap: 7px;
+
+  & > div {
+    height: 25px;
+    cursor: pointer;
+  }
+
+  & p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    width: 25px;
+    border-radius: 4px;
+    transition: 0.1s background ease-in-out;
+    cursor: pointer;
+
+    &.isActive {
+      background: var(--highlight-color);
+    }
+
+    &:hover {
+      background: var(--sub-op-color);
+    }
+  }
+}
