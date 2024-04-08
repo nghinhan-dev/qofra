@@ -6,10 +6,10 @@ section.table {
   min-height: 100dvh;
 
   & h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 600;
     color: var(--sub-color);
-    margin: 3rem 0;
+    margin: 2rem 0;
   }
 
   & .filter--container {
