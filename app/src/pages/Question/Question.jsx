@@ -2,9 +2,10 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetQuestionsQuery } from "../../service/QuestionAPI";
-import Dialog from "../../components/Dialog/Dialog";
 import { displayTime } from "../../utils/converter";
 import { updateQuery } from "../../lib/redux/questionSlice";
+import Dialog from "../../components/Dialog/Dialog";
+import Pagination from "../../components/Pagination/Pagination";
 import "./Question.css";
 
 export default function Question() {
@@ -25,9 +26,14 @@ export default function Question() {
     },
   });
 
+  // paginate state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemPerPage = 5;
+
   const { data, isLoading, isSuccess } = useGetQuestionsQuery(searchQuery);
 
   let tableContent;
+  let maxPage = 3;
 
   const checkHandler = (key, value, checked) => {
     const newFilterState = { ...filterState }; // Create a shallow copy of the state object
@@ -91,14 +97,26 @@ export default function Question() {
       query = query.slice(0, -1);
     }
 
-    console.log(query);
+    setCurrentPage(1);
     dispatch(updateQuery(query));
   };
 
   if (isSuccess) {
+    const questionArr = data.result;
+    maxPage = Math.ceil(questionArr.length / itemPerPage);
+
+    let pageArr = [];
+    for (let index = 0; index < questionArr.length; index += itemPerPage) {
+      console.log(questionArr.length);
+
+      pageArr.push([...questionArr.slice(index, index + itemPerPage)]);
+    }
+
+    console.log(pageArr);
+
     tableContent =
       data.result.length !== 0 ? (
-        data.result.map((question) => (
+        pageArr[currentPage - 1].map((question) => (
           <QuestionRow
             key={question._id}
             {...question}
@@ -164,6 +182,11 @@ export default function Question() {
           </tbody>
         </table>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        max={maxPage}
+      />
     </section>
   );
 }

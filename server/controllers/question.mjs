@@ -53,7 +53,7 @@ export async function paginate(req, res, next) {
         },
       ]);
     } else {
-      questions = await Question.find({}).limit(5);
+      questions = await Question.find({}).limit(20);
     }
 
     res.status(200).send({
