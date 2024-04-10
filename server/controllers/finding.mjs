@@ -122,8 +122,9 @@ export async function resolveFinding(req, res, next) {
   try {
     const findingID = req.params.findingID;
     const action = req.body.action;
-    const finding = await Finding.findByIdAndUpdate(findingID, {
+    await Finding.findByIdAndUpdate(findingID, {
       action: action,
+      status: "Done",
     });
 
     res.status(200).send({ message: "Success" });
