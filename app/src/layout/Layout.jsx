@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
+import Logout from "../features/auth/Logout";
 import { ToastContainer } from "react-toastify";
 import "./Layout.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,6 +24,7 @@ export default function Layout({ children }) {
         theme="dark"
         pauseOnHover
       />
+      <Logout />
       <Navbar />
       {children}
       <Footer />

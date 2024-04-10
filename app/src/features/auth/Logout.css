@@ -1,0 +1,10 @@
+.logOut {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 5px;
+  background: var(--sub-op-color);
+  border-radius: 4px;
+  color: var(--sub-color);
+  cursor: pointer;
+}

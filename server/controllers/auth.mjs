@@ -81,10 +81,7 @@ export async function signUp(req, res, next) {
     const user = await User.findOne({ email: email });
 
     if (user) {
-      throw createError(
-        409,
-        "Existed email, please use a different email or try logging in"
-      );
+      throw createError(409, "Existed email, please use a different email");
     }
 
     // CREATE USER
@@ -111,7 +108,10 @@ export async function signUp(req, res, next) {
   }
 }
 
-export async function logout(req, res, next) {}
+export async function logout(req, res, next) {
+  res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+  res.status(200).send({ message: "Login successfull" });
+}
 
 export async function refresh(req, res, next) {
   try {
