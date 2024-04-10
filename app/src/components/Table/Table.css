@@ -79,3 +79,43 @@ section.table {
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  section.table {
+    & h1 {
+      font-size: 2rem;
+      margin: 1rem 0;
+    }
+
+    & .table__container {
+      margin-top: 2rem;
+      border-radius: 6px;
+
+      & .sort-cell,
+      .status {
+        gap: 3px;
+      }
+
+      & table {
+        font-size: 0.7rem;
+
+        & thead td p {
+          padding: 0.5rem 0.7rem;
+        }
+      }
+
+      & td p {
+        padding: 0.5rem 0.2rem;
+      }
+
+      & tr {
+        border-bottom: 1px solid var(--sub-op-color);
+        transition: 0.4s all;
+
+        &:hover {
+          background-color: var(--txt-op-color);
+        }
+      }
+    }
+  }
+}

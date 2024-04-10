@@ -45,3 +45,35 @@
     text-decoration: none;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .finding--container {
+    gap: 0.6rem;
+    padding: 1rem 1.5rem;
+
+    & .key {
+      flex-shrink: 0;
+      width: 100px;
+      color: var(--txt-op-color);
+    }
+
+    & .finding--row {
+      font-size: 0.9rem;
+
+      & textarea {
+        resize: none;
+        width: 100%;
+        padding: 0.7rem 0.5rem;
+      }
+    }
+  }
+
+  .finding--nav {
+    margin-bottom: 0.8rem;
+
+    & a {
+      gap: 8px;
+      text-decoration: none;
+    }
+  }
+}
