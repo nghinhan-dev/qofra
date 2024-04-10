@@ -47,7 +47,7 @@ const questionSchema = new Schema(
           {
             $project: {
               question: {
-                $slice: ["$question", 1],
+                $slice: ["$question", 1 * level],
               },
             },
           },
