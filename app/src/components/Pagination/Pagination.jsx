@@ -20,7 +20,13 @@ export default function Pagination({ currentPage, setCurrentPage, max }) {
       </div>
       {currentPage < 3 ? (
         <>
-          <p className={currentPage === 1 ? "isActive" : ""}> 1</p>
+          <p
+            className={currentPage === 1 ? "isActive" : ""}
+            onClick={() => setCurrentPage(1)}
+          >
+            {" "}
+            1
+          </p>
           <p
             className={currentPage === 2 ? "isActive" : ""}
             onClick={() => setCurrentPage(2)}
