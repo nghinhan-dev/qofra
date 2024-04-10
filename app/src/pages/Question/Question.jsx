@@ -7,6 +7,7 @@ import { updateQuery } from "../../lib/redux/questionSlice";
 import Dialog from "../../components/Dialog/Dialog";
 import Pagination from "../../components/Pagination/Pagination";
 import "./Question.css";
+import { Copy } from "lucide-react";
 
 export default function Question() {
   const dispatch = useDispatch();
@@ -192,6 +193,7 @@ export default function Question() {
 }
 
 function QuestionRow({
+  _id,
   dep,
   process,
   scope,
@@ -218,6 +220,14 @@ function QuestionRow({
       </td>
       <td>
         <p>{hasIssue ? "True" : "False"}</p>
+      </td>
+      <td>
+        <p
+          style={{ cursor: "pointer" }}
+          onClick={() => navigator.clipboard.writeText(_id)}
+        >
+          <Copy size={15} />
+        </p>
       </td>
     </tr>
   );
