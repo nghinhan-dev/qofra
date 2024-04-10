@@ -29,7 +29,7 @@ export default function Question() {
 
   // paginate state
   const [currentPage, setCurrentPage] = useState(1);
-  const itemPerPage = 5;
+  const itemPerPage = 7;
 
   const { data, isLoading, isSuccess } = useGetQuestionsQuery(searchQuery);
 
