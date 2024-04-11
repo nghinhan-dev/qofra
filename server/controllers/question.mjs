@@ -1,4 +1,5 @@
 import Question from "../models/Question.mjs";
+import Audit from "../models/Audit.mjs";
 import { createError } from "../utils/createError.mjs";
 
 export async function generateQuestions(req, res, next) {
@@ -9,6 +10,7 @@ export async function generateQuestions(req, res, next) {
       throw createError(400, "Cannot find questions meet the require");
 
     const questions = nestedQuestions.map((obj) => obj.question);
+    await Audit.create({ process: req.body.process });
 
     res.status(200).send(questions);
   } catch (error) {

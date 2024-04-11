@@ -33,7 +33,7 @@ export default function Pagination({ currentPage, setCurrentPage, max }) {
           >
             2
           </p>
-          <p onClick={() => setCurrentPage(3)}>3</p>
+          {max >= 3 && <p onClick={() => setCurrentPage(3)}>3</p>}
         </>
       ) : currentPage === max ? (
         <>

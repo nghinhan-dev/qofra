@@ -14,7 +14,7 @@ export default function Question() {
   const searchQuery = useSelector((state) => state.question.searchQuery);
   const [filterState, setFilterState] = useState({
     scope: {
-      values: ["man", "material", "safety", "method/measurement", "machine"],
+      values: ["Man", "Material", "Safety", "Method/ Measure", "Machine"],
       selected: [],
     },
     process: {
