@@ -1,13 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 // element
-import Audit from "../pages/Audit/Audit";
-import Login from "../pages/Login/Login";
-import Opl from "../pages/Opl/Opl";
-import Report from "../pages/Report/Report";
-import Question from "../pages/Question/Question";
-import Finding from "../pages/Opl/Finding";
-import Error from "../pages/Error/Error";
-import PersistLogin from "../features/auth/PersistLogin";
+import Login from "../../pages/Login/Login";
+import Error from "../../pages/Error/Error";
+import PersistLogin from "../../features/auth/PersistLogin";
+import { Audit, Question, Report, Opl, Finding } from "./components";
 
 const router = createBrowserRouter([
   {

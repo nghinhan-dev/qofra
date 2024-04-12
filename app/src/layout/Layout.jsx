@@ -2,11 +2,30 @@
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import Logout from "../features/auth/Logout";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useSendLogoutMutation } from "../service/AuthAPI";
 import "./Layout.css";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Layout({ children }) {
+  const navigate = useNavigate();
+  const [sendLogout, { isError, error }] = useSendLogoutMutation();
+
+  const sendLogoutHandler = async () => {
+    try {
+      await sendLogout();
+
+      navigate("/login");
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
+
+  if (isError)
+    toast.error(error.message, {
+      position: "top-center",
+    });
   return (
     <>
       <ToastContainer
@@ -24,7 +43,7 @@ export default function Layout({ children }) {
         theme="dark"
         pauseOnHover
       />
-      <Logout />
+      <Logout sendLogout={sendLogoutHandler} />
       <Navbar />
       {children}
       <Footer />

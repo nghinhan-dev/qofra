@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentToken } from "../../lib/redux/authSlice";
 import { useRefreshMutation } from "../../service/AuthAPI";
 import { useEffect, useRef } from "react";
+import { Suspense } from "react";
 
 function PersistLogin() {
   const effectRan = useRef(false);
@@ -48,7 +49,9 @@ function PersistLogin() {
 
   return (
     <>
-      <Layout>{content}</Layout>
+      <Layout>
+        <Suspense fallback={<Loading />}>{content}</Suspense>
+      </Layout>
     </>
   );
 }
