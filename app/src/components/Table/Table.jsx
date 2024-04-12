@@ -43,7 +43,7 @@ export default function Table({ data }) {
                   <p>Due Date</p>
                 </td>
                 <td width={"11%"}>
-                  <p>Reporter</p>
+                  <p>Dectector</p>
                 </td>
                 <td width={"11%"}>
                   <p>P.I.C</p>
@@ -77,7 +77,7 @@ export default function Table({ data }) {
 function Row({
   _id,
   question,
-  reporter,
+  detector,
   dueDate,
   personInCharge,
   action,
@@ -96,7 +96,7 @@ function Row({
         <p>{displayTime(dueDate)}</p>
       </td>
       <td>
-        <p>{abbreviatedName(reporter)}</p>
+        <p>{abbreviatedName(detector)}</p>
       </td>
       <td>
         <p>{abbreviatedName(personInCharge.fullName)}</p>

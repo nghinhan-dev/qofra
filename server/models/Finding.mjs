@@ -11,7 +11,7 @@ const findingSchema = new Schema({
   dueDate: Date,
   completionDate: Date,
   action: String,
-  reporter: String,
+  detector: String,
   personInCharge: {
     type: Schema.Types.ObjectId,
     ref: "User",

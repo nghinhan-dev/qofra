@@ -4,6 +4,7 @@ import InputSelect from "../../components/Input/InputSelect";
 import Button from "../../components/Button/Button";
 import { useCreateFindingMutation } from "../../service/FindingAPI";
 import { selectAuditQuestionay } from "../../lib/redux/questionSlice";
+import { abbreviatedName } from "../../utils/converter";
 import { useSelector } from "react-redux";
 
 export default function CreateFinding({ createIssue }) {
@@ -68,7 +69,7 @@ export default function CreateFinding({ createIssue }) {
             label="Incharge"
             options={inCharge.map((user) => ({
               value: user._id,
-              label: user.fullName,
+              label: abbreviatedName(user.fullName),
             }))}
             setState={setSelectedIncharge}
           />
