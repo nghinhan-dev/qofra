@@ -50,7 +50,7 @@ export default function Finding() {
       images,
       action,
       question,
-      reporter,
+      detector,
       status,
     } = finding;
 
@@ -84,9 +84,9 @@ export default function Finding() {
             </div>
           </div>
           <div className="finding--row d__flex">
-            <p className="key">Reporter</p>
+            <p className="key">Detector</p>
             <div>
-              <p>{reporter}</p>
+              <p>{detector}</p>
             </div>
           </div>
           <div className="finding--row d__flex">

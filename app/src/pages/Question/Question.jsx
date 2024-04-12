@@ -113,8 +113,6 @@ export default function Question() {
       pageArr.push([...questionArr.slice(index, index + itemPerPage)]);
     }
 
-    console.log(pageArr);
-
     tableContent =
       data.result.length !== 0 ? (
         pageArr[currentPage - 1].map((question) => (
