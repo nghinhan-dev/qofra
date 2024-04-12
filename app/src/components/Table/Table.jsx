@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Icons from "../../components/Icon/Icon";
+import Pagination from "../Pagination/Pagination";
 import InputSelect from "../../components/Input/InputSelect";
 import {
   displayTime,
@@ -10,9 +11,18 @@ import {
 } from "../../utils/converter";
 import "./Table.css";
 
-export default function Table({ data }) {
-  const [selectPerson, setSelectPerson] = useState("");
-  const options = getPICArray(data);
+export default function Table({ data, setSelectPerson, options }) {
+  // paginate state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemPerPage = 6;
+  let maxPage = 3;
+
+  maxPage = Math.ceil(data.length / itemPerPage);
+
+  let pageArr = [];
+  for (let index = 0; index < data.length; index += itemPerPage) {
+    pageArr.push([...data.slice(index, index + itemPerPage)]);
+  }
 
   return (
     <>
@@ -58,17 +68,17 @@ export default function Table({ data }) {
               </tr>
             </thead>
             <tbody>
-              {data.map((finding) => {
-                if (
-                  selectPerson.length === 0 ||
-                  finding.personInCharge.fullName === selectPerson
-                ) {
-                  return <Row key={finding._id} {...finding} />;
-                }
-              })}
+              {pageArr[currentPage - 1].map((finding) => (
+                <Row key={finding._id} {...finding} />
+              ))}
             </tbody>
           </table>
         </div>
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          max={maxPage}
+        />
       </section>
     </>
   );
@@ -116,21 +126,4 @@ function Row({
       </td>
     </tr>
   );
-}
-
-function getPICArray(data) {
-  const map = new Map();
-  data.forEach((finding) => {
-    map.set(finding.personInCharge.fullName, {
-      value: finding.personInCharge.fullName,
-      label: abbreviatedName(finding.personInCharge.fullName),
-    });
-  });
-
-  // eslint-disable-next-line no-unused-vars
-  const array = Array.from(map, ([name, value]) => {
-    return value;
-  });
-
-  return array;
 }
