@@ -81,6 +81,11 @@ export const findingApiSlice = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["Finding"],
     }),
+    getChartData: builder.query({
+      query: () => ({
+        url: "/finding/chart",
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -90,4 +95,5 @@ export const {
   useGetFindingsQuery,
   useGetDetailFindingQuery,
   useResolveFindingMutation,
+  useGetChartDataQuery,
 } = findingApiSlice;

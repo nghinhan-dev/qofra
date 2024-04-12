@@ -132,3 +132,13 @@ export async function resolveFinding(req, res, next) {
     next(error);
   }
 }
+
+export async function getChartData(req, res, next) {
+  try {
+    const chart = await Finding.drawChart();
+
+    res.status(200).send(chart);
+  } catch (error) {
+    next(error);
+  }
+}

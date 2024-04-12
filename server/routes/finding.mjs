@@ -2,6 +2,7 @@ import express from "express";
 import { upload } from "../lib/multer.mjs";
 import {
   createFinding,
+  getChartData,
   getDetailFinding,
   getFindings,
   resolveFinding,
@@ -11,6 +12,8 @@ import { fileValidate } from "../middlewares/validation/fileValidate.mjs";
 import { body } from "express-validator";
 
 export const findingRoutes = express.Router();
+
+findingRoutes.get("/chart", getChartData);
 
 findingRoutes
   .use(verifyToken)
