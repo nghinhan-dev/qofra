@@ -29,62 +29,97 @@ const findingSchema = new Schema(
   },
   {
     statics: {
-      drawChart() {
-        const chartData = this.aggregate([
+      async drawChart() {
+        const overallChart = await this.aggregate([
           {
             $match: {
               foundDate: {
-                $gte: new Date("2023-01-01"),
-                $lt: new Date("2024-01-01"),
+                $gte: new Date("Sun, 01 Jan 2023 00:00:00 GMT"),
+                $lt: new Date("Mon, 01 Jan 2024 00:00:00 GMT"),
               },
             },
           },
           {
             $lookup: {
               from: "questions",
-              let: { qID: "$question" },
+              let: {
+                qID: "$question",
+              },
               pipeline: [
                 {
                   $match: {
                     $expr: {
-                      $eq: [{ $toString: "$_id" }, "$$qID"],
+                      $eq: [
+                        {
+                          $toString: "$_id",
+                        },
+                        "$$qID",
+                      ],
                     },
                   },
                 },
-                { $project: { process: 1, _id: 0 } },
+                {
+                  $project: {
+                    process: 1,
+                    _id: 0,
+                  },
+                },
               ],
               as: "question",
             },
           },
-          { $unwind: { path: "$question" } },
+          {
+            $unwind: {
+              path: "$question",
+            },
+          },
           {
             $group: {
               _id: {
-                month: { $month: "$foundDate" },
-                process: "$question.process",
+                month: {
+                  $month: "$foundDate",
+                },
+                status: "$status",
               },
-              done: {
+              extruder: {
                 $sum: {
                   $cond: {
-                    if: { $eq: ["$status", "Done"] },
+                    if: {
+                      $eq: ["$question.process", "Extruder"],
+                    },
                     then: 1,
                     else: 0,
                   },
                 },
               },
-              overdue: {
+              crushing: {
                 $sum: {
                   $cond: {
-                    if: { $eq: ["$status", "Overdue"] },
+                    if: {
+                      $eq: ["$question.process", "Crushing"],
+                    },
                     then: 1,
                     else: 0,
                   },
                 },
               },
-              onGoing: {
+              mixing: {
                 $sum: {
                   $cond: {
-                    if: { $eq: ["$status", "Ongoing"] },
+                    if: {
+                      $eq: ["$question.process", "Mixing"],
+                    },
+                    then: 1,
+                    else: 0,
+                  },
+                },
+              },
+              moldSetter: {
+                $sum: {
+                  $cond: {
+                    if: {
+                      $eq: ["$question.process", "Mold Setter"],
+                    },
                     then: 1,
                     else: 0,
                   },
@@ -95,36 +130,16 @@ const findingSchema = new Schema(
           {
             $group: {
               _id: "$_id.month",
-              findings: { $push: "$$ROOT" },
-            },
-          },
-          {
-            $addFields: {
-              findings: {
-                $map: {
-                  input: "$findings",
-                  in: {
-                    $mergeObjects: [
-                      { process: "$$this._id.process" },
-                      "$$this",
-                    ],
-                  },
-                },
+              stats: {
+                $push: "$$ROOT",
               },
             },
           },
           {
             $project: {
-              _id: 1,
-              findings: {
-                $map: {
-                  input: "$findings",
-                  in: {
-                    process: "$$this.process",
-                    done: "$$this.done",
-                    overdue: "$$this.overdue",
-                    onGoing: "$$this.onGoing",
-                  },
+              stats: {
+                _id: {
+                  month: 0,
                 },
               },
             },
@@ -136,7 +151,45 @@ const findingSchema = new Schema(
           },
         ]);
 
-        return chartData;
+        const doughnutChart = await this.aggregate(
+          [
+            {
+              $match: {
+                foundDate: {
+                  $gte: new Date("2023-01-01"),
+                  $lt: new Date("2024-01-01"),
+                },
+              },
+            },
+            {
+              $lookup: {
+                from: "questions",
+                let: { qID: "$question" },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $eq: [{ $toString: "$_id" }, "$$qID"],
+                      },
+                    },
+                  },
+                  { $project: { scope: 1, _id: 0 } },
+                ],
+                as: "question",
+              },
+            },
+            {
+              $group: {
+                _id: "$question.scope",
+                count: { $count: {} },
+              },
+            },
+            { $sort: { _id: 1 } },
+          ],
+          { maxTimeMS: 60000, allowDiskUse: true }
+        );
+
+        return { overallChart, doughnutChart };
       },
     },
   }

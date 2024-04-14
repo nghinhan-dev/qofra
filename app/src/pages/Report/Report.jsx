@@ -10,8 +10,11 @@ import {
   Tooltip,
   LineController,
   BarController,
+  Title,
+  ArcElement,
 } from "chart.js";
-import { Chart } from "react-chartjs-2";
+import { Chart, Doughnut } from "react-chartjs-2";
+import "./Report.css";
 
 ChartJS.register(
   LinearScale,
@@ -22,18 +25,18 @@ ChartJS.register(
   Legend,
   Tooltip,
   LineController,
-  BarController
+  BarController,
+  Title,
+  ArcElement
 );
 
 const options = {
-  backgroundColor: "white",
   plugins: {
     title: {
       display: true,
-      text: "Chart.js Bar Chart - Stacked",
+      text: "NO. finding & audit time",
     },
   },
-  responsive: true,
   scales: {
     x: {
       stacked: true,
@@ -61,13 +64,15 @@ const labels = [
 
 export default function Report() {
   const { data, isSuccess } = useGetChartDataQuery();
+  const chosenMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-  let chartData;
+  let orverallChartDataSet;
+  let doughnutChartData;
+
   if (isSuccess) {
-    const result = drawTest(data);
-    console.log("result:", result);
+    const { overallChart, doughnutChart } = data;
 
-    chartData = {
+    orverallChartDataSet = {
       labels,
       datasets: [
         {
@@ -76,68 +81,120 @@ export default function Report() {
           borderColor: "rgb(234, 234, 29)",
           borderWidth: 2,
           fill: false,
-          data: result.auditTime,
+          data: chosenMonth.map((month) => {
+            let done = overallChart[month - 1].stats.reduce((acc, stat) => {
+              if (stat._id.status === "Done")
+                return (acc +=
+                  stat.extruder +
+                  stat.crushing +
+                  stat.mixing +
+                  stat.moldSetter);
+            }, 0);
+
+            return Math.floor(
+              done * (Math.random() * (1.7 - 1.4) + 1.4).toFixed(2)
+            );
+          }),
         },
         {
           label: "Done",
-          data: result.done,
+          data: chosenMonth.map((month) => {
+            let done = overallChart[month - 1].stats.reduce((acc, stat) => {
+              if (stat._id.status === "Done")
+                return (acc +=
+                  stat.extruder +
+                  stat.crushing +
+                  stat.mixing +
+                  stat.moldSetter);
+            }, 0);
+
+            return done;
+          }),
           backgroundColor: "rgb(255, 99, 132)",
         },
         {
           label: "On Going",
-          data: result.onGoing,
+          data: chosenMonth.map((month) => {
+            let done = overallChart[month - 1].stats.reduce((acc, stat) => {
+              if (stat._id.status === "On Going")
+                return (acc +=
+                  stat.extruder +
+                  stat.crushing +
+                  stat.mixing +
+                  stat.moldSetter);
+            }, 0);
+
+            return done;
+          }),
           backgroundColor: "rgb(75, 192, 192)",
         },
         {
           label: "Overdue",
-          data: result.overdue,
+          data: chosenMonth.map((month) => {
+            let done = overallChart[month - 1].stats.reduce((acc, stat) => {
+              if (stat._id.status === "Overdue")
+                return (acc +=
+                  stat.extruder +
+                  stat.crushing +
+                  stat.mixing +
+                  stat.moldSetter);
+            }, 0);
+
+            return done;
+          }),
           backgroundColor: "rgb(53, 162, 235)",
+        },
+      ],
+    };
+
+    doughnutChartData = {
+      labels: ["Machine", "Man", "Material", "Method/ Measure", "Safety"],
+      datasets: [
+        {
+          label: "# of Finding",
+          data: doughnutChart.map((item) => item.count),
+          backgroundColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+          ],
+          borderWidth: 1,
         },
       ],
     };
   }
 
   return (
-    <section className="d__flex">
-      {isSuccess && <Chart type="bar" options={options} data={chartData} />}
+    <section id="report" className="d__flex">
+      {isSuccess && (
+        <>
+          <div className="overallChart chart">
+            <Chart type="bar" options={options} data={orverallChartDataSet} />
+          </div>
+          <div className="doughnutChart chart">
+            <Doughnut
+              data={doughnutChartData}
+              options={{
+                plugins: {
+                  title: {
+                    display: true,
+                    text: "No. Findings by Scope",
+                  },
+                },
+              }}
+            />
+          </div>
+        </>
+      )}
     </section>
   );
-}
-
-function drawTest(data) {
-  let chartData = {
-    auditTime: [],
-    onGoing: [],
-    done: [],
-    overdue: [],
-  };
-
-  for (const month of data) {
-    const { findings } = month;
-
-    let total = findings.reduce(
-      (acc, finding) => {
-        return {
-          done: acc.done + finding.done,
-          overdue: acc.overdue + Math.floor(finding.done * 0.2),
-          onGoing: acc.onGoing + Math.floor(finding.done * 0.3),
-        };
-      },
-      {
-        onGoing: 0,
-        done: 0,
-        overdue: 0,
-      }
-    );
-
-    chartData.done.push(total.done);
-    chartData.onGoing.push(total.onGoing);
-    chartData.overdue.push(total.overdue);
-    chartData.auditTime.push(
-      (total.done + total.onGoing + total.overdue) *
-        (Math.floor(Math.random() * 2) + 2)
-    );
-  }
-
-  return chartData;
 }
