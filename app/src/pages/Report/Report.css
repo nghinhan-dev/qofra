@@ -13,4 +13,8 @@
     width: 600px;
     aspect-ratio: 2/1;
   }
+
+  & .month_filter {
+    margin: 2rem 0;
+  }
 }

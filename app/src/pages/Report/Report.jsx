@@ -15,6 +15,8 @@ import {
 } from "chart.js";
 import { Chart, Doughnut } from "react-chartjs-2";
 import "./Report.css";
+import MonthFilter from "../../features/monthFilter/MonthFilter";
+import { useState } from "react";
 
 ChartJS.register(
   LinearScale,
@@ -47,24 +49,24 @@ const options = {
   },
 };
 
-const labels = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
 export default function Report() {
   const { data, isSuccess } = useGetChartDataQuery();
-  const chosenMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+  const initialMonthArr = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const [chosenMonth, setChosenMonth] = useState(initialMonthArr);
 
   let orverallChartDataSet;
   let doughnutChartData;
@@ -73,7 +75,7 @@ export default function Report() {
     const { overallChart, doughnutChart } = data;
 
     orverallChartDataSet = {
-      labels,
+      labels: chosenMonth,
       datasets: [
         {
           type: "line",
@@ -81,8 +83,8 @@ export default function Report() {
           borderColor: "rgb(234, 234, 29)",
           borderWidth: 2,
           fill: false,
-          data: chosenMonth.map((month) => {
-            let done = overallChart[month - 1].stats.reduce((acc, stat) => {
+          data: chosenMonth.map((_, index) => {
+            let done = overallChart[index].stats.reduce((acc, stat) => {
               if (stat._id.status === "Done")
                 return (acc +=
                   stat.extruder +
@@ -91,15 +93,13 @@ export default function Report() {
                   stat.moldSetter);
             }, 0);
 
-            return Math.floor(
-              done * (Math.random() * (1.7 - 1.4) + 1.4).toFixed(2)
-            );
+            return done * 1.3;
           }),
         },
         {
           label: "Done",
-          data: chosenMonth.map((month) => {
-            let done = overallChart[month - 1].stats.reduce((acc, stat) => {
+          data: chosenMonth.map((_, index) => {
+            let done = overallChart[index].stats.reduce((acc, stat) => {
               if (stat._id.status === "Done")
                 return (acc +=
                   stat.extruder +
@@ -114,8 +114,8 @@ export default function Report() {
         },
         {
           label: "On Going",
-          data: chosenMonth.map((month) => {
-            let done = overallChart[month - 1].stats.reduce((acc, stat) => {
+          data: chosenMonth.map((_, index) => {
+            let done = overallChart[index].stats.reduce((acc, stat) => {
               if (stat._id.status === "On Going")
                 return (acc +=
                   stat.extruder +
@@ -130,8 +130,8 @@ export default function Report() {
         },
         {
           label: "Overdue",
-          data: chosenMonth.map((month) => {
-            let done = overallChart[month - 1].stats.reduce((acc, stat) => {
+          data: chosenMonth.map((_, index) => {
+            let done = overallChart[index].stats.reduce((acc, stat) => {
               if (stat._id.status === "Overdue")
                 return (acc +=
                   stat.extruder +
@@ -175,6 +175,8 @@ export default function Report() {
 
   return (
     <section id="report" className="d__flex">
+      <MonthFilter monthArr={chosenMonth} setChosenMonth={setChosenMonth} />
+
       {isSuccess && (
         <>
           <div className="overallChart chart">

@@ -108,8 +108,6 @@ export default function Question() {
 
     let pageArr = [];
     for (let index = 0; index < questionArr.length; index += itemPerPage) {
-      console.log(questionArr.length);
-
       pageArr.push([...questionArr.slice(index, index + itemPerPage)]);
     }
 
