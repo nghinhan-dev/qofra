@@ -17,7 +17,6 @@ export default function MonthFilter({ monthArr, setChosenMonth }) {
 
   const [isDragging, setIsDragging] = useState(false);
 
-  const gridRef = useRef(null);
   const itemRefs = useRef(null);
 
   function getMap() {
@@ -50,13 +49,26 @@ export default function MonthFilter({ monthArr, setChosenMonth }) {
         setIsDragging(false);
 
         const map = getMap();
-        // let newChosenMonth = monthArr;
+        let newChosenMonth = [];
 
         map.forEach((value, key) => {
-          const rectElm = value.getBoundingClientRect();
+          const squareX = selectArea.left;
+          const squareY = selectArea.top;
+          const squareWidth = selectArea.right - selectArea.left;
+          const squareHeight = selectArea.bottom - selectArea.top;
 
-          if (rectElm.left > selectArea.left) console.log(key);
+          const itemElm = value.getBoundingClientRect();
+          const isSelected =
+            squareY < itemElm.top + itemElm.height &&
+            itemElm.top < squareY + squareHeight &&
+            itemElm.left + itemElm.width > squareX &&
+            squareX + squareWidth > itemElm.left;
+
+          isSelected && newChosenMonth.push(key);
         });
+
+        console.log(newChosenMonth);
+        setChosenMonth(newChosenMonth);
         setSelectArea({
           top: 0,
           bottom: 0,
@@ -68,24 +80,23 @@ export default function MonthFilter({ monthArr, setChosenMonth }) {
           clientY: 0,
         });
       }}
-      ref={gridRef}
       className="month_filter"
     >
       <Square {...selectArea} />
       <div className="month__filter-container">
-        {monthArr.map((str) => (
+        {monthArr.map((month) => (
           <div
-            key={str}
+            key={month.title}
             ref={(node) => {
               const map = getMap();
               if (node) {
-                map.set(str, node);
+                map.set(month.title, node);
               } else {
-                map.delete(str);
+                map.delete(month.title);
               }
             }}
           >
-            <p>{str}</p>
+            <p>{month.title}</p>
           </div>
         ))}
       </div>

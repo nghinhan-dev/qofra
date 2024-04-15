@@ -53,18 +53,18 @@ export default function Report() {
   const { data, isSuccess } = useGetChartDataQuery();
 
   const initialMonthArr = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    { title: "Jan", isSelected: false },
+    { title: "Feb", isSelected: false },
+    { title: "Mar", isSelected: false },
+    { title: "Apr", isSelected: false },
+    { title: "May", isSelected: false },
+    { title: "Jun", isSelected: false },
+    { title: "Jul", isSelected: false },
+    { title: "Aug", isSelected: false },
+    { title: "Sep", isSelected: false },
+    { title: "Oct", isSelected: false },
+    { title: "Nov", isSelected: false },
+    { title: "Dec", isSelected: false },
   ];
   const [chosenMonth, setChosenMonth] = useState(initialMonthArr);
 
