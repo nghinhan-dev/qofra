@@ -17,4 +17,8 @@
   & .month_filter {
     margin: 2rem 0;
   }
+
+  & .chart__filter {
+    display: flex;
+  }
 }

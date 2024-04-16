@@ -54,29 +54,47 @@ export default function Report() {
   const { data, isSuccess, isLoading } = useGetChartDataQuery();
 
   const initialMonthArr = [
-    { title: "Jan", isSelected: true, col: 1 },
-    { title: "Feb", isSelected: true, col: 2 },
-    { title: "Mar", isSelected: true, col: 3 },
-    { title: "Apr", isSelected: true, col: 4 },
-    { title: "May", isSelected: true, col: 5 },
-    { title: "Jun", isSelected: true, col: 6 },
-    { title: "Jul", isSelected: true, col: 7 },
-    { title: "Aug", isSelected: true, col: 8 },
-    { title: "Sep", isSelected: true, col: 9 },
-    { title: "Oct", isSelected: true, col: 10 },
-    { title: "Nov", isSelected: true, col: 11 },
-    { title: "Dec", isSelected: true, col: 12 },
+    { title: "Jan", isSelected: true, index: 0 },
+    { title: "Feb", isSelected: true, index: 1 },
+    { title: "Mar", isSelected: true, index: 2 },
+    { title: "Apr", isSelected: true, index: 3 },
+    { title: "May", isSelected: true, index: 4 },
+    { title: "Jun", isSelected: true, index: 5 },
+    { title: "Jul", isSelected: true, index: 6 },
+    { title: "Aug", isSelected: true, index: 7 },
+    { title: "Sep", isSelected: true, index: 8 },
+    { title: "Oct", isSelected: true, index: 9 },
+    { title: "Nov", isSelected: true, index: 10 },
+    { title: "Dec", isSelected: true, index: 11 },
   ];
   const [chosenMonth, setChosenMonth] = useState(initialMonthArr);
   const [selectedProcess, setSelectProcess] = useState([
-    { title: "extruder", isSelected: true },
-    { title: "mixing", isSelected: true },
-    { title: "crushing", isSelected: true },
-    { title: "moldSetter", isSelected: true },
+    { title: "extruder", isSelected: true, index: 0 },
+    { title: "mixing", isSelected: true, index: 1 },
+    { title: "crushing", isSelected: true, index: 2 },
+    { title: "moldSetter", isSelected: true, index: 3 },
   ]);
 
   let orverallChartDataSet;
   let doughnutChartData;
+
+  function accByStatus(acc, stat, status) {
+    if (stat._id.status === status)
+      return (acc +=
+        (selectedProcess.some(
+          (element) => element.title === "extruder" && element.isSelected
+        ) && stat.extruder) +
+        (selectedProcess.some(
+          (element) => element.title === "crushing" && element.isSelected
+        ) && stat.crushing) +
+        (selectedProcess.some(
+          (element) => element.title === "mixing" && element.isSelected
+        ) && stat.mixing) +
+        (selectedProcess.some(
+          (element) => element.title === "moldSetter" && element.isSelected
+        ) && stat.moldSetter));
+    else return 0;
+  }
 
   if (isSuccess) {
     const { overallChart, doughnutChart } = data;
@@ -91,14 +109,10 @@ export default function Report() {
           borderWidth: 2,
           fill: false,
           data: filterData(overallChart, chosenMonth).map(({ stats }) => {
-            let total = stats.reduce((acc, stat) => {
-              if (stat._id.status === "Done")
-                return (acc +=
-                  (selectedProcess.includes("extruder") && stat.extruder) +
-                  (selectedProcess.includes("crushing") && stat.crushing) +
-                  (selectedProcess.includes("mixing") && stat.mixing) +
-                  (selectedProcess.includes("moldSetter") && stat.moldSetter));
-            }, 0);
+            let total = stats.reduce(
+              (acc, stat) => accByStatus(acc, stat, "Done"),
+              0
+            );
 
             return total * 1.3;
           }),
@@ -106,15 +120,10 @@ export default function Report() {
         {
           label: "Done",
           data: filterData(overallChart, chosenMonth).map(({ stats }) => {
-            let total = stats.reduce((acc, stat) => {
-              if (stat._id.status === "Done") {
-                return (acc +=
-                  (selectedProcess.includes("extruder") && stat.extruder) +
-                  (selectedProcess.includes("crushing") && stat.crushing) +
-                  (selectedProcess.includes("mixing") && stat.mixing) +
-                  (selectedProcess.includes("moldSetter") && stat.moldSetter));
-              }
-            }, 0);
+            let total = stats.reduce(
+              (acc, stat) => accByStatus(acc, stat, "Done"),
+              0
+            );
 
             return total;
           }),
@@ -123,14 +132,10 @@ export default function Report() {
         {
           label: "On Going",
           data: filterData(overallChart, chosenMonth).map(({ stats }) => {
-            let total = stats.reduce((acc, stat) => {
-              if (stat._id.status === "On Going")
-                return (acc +=
-                  (selectedProcess.includes("extruder") && stat.extruder) +
-                  (selectedProcess.includes("crushing") && stat.crushing) +
-                  (selectedProcess.includes("mixing") && stat.mixing) +
-                  (selectedProcess.includes("moldSetter") && stat.moldSetter));
-            }, 0);
+            let total = stats.reduce(
+              (acc, stat) => accByStatus(acc, stat, "On Going"),
+              0
+            );
 
             return total;
           }),
@@ -139,14 +144,10 @@ export default function Report() {
         {
           label: "Overdue",
           data: filterData(overallChart, chosenMonth).map(({ stats }) => {
-            let total = stats.reduce((acc, stat) => {
-              if (stat._id.status === "Overdue")
-                return (acc +=
-                  (selectedProcess.includes("extruder") && stat.extruder) +
-                  (selectedProcess.includes("crushing") && stat.crushing) +
-                  (selectedProcess.includes("mixing") && stat.mixing) +
-                  (selectedProcess.includes("moldSetter") && stat.moldSetter));
-            }, 0);
+            let total = stats.reduce(
+              (acc, stat) => accByStatus(acc, stat, "Overdue"),
+              0
+            );
 
             return total;
           }),
@@ -187,7 +188,16 @@ export default function Report() {
       {isSuccess && (
         <>
           <div className="chart__filter">
-            <DragFilter filterArr={chosenMonth} setState={setChosenMonth} />
+            <DragFilter
+              colNum={6}
+              filterArr={chosenMonth}
+              setState={setChosenMonth}
+            />
+            <DragFilter
+              colNum={2}
+              filterArr={selectedProcess}
+              setState={setSelectProcess}
+            />
           </div>
           <div className="overallChart chart">
             <Chart type="bar" options={options} data={orverallChartDataSet} />
@@ -214,9 +224,9 @@ export default function Report() {
 function filterData(data, filterCrit) {
   const arrResult = [];
 
-  for (const { isSelected, col } of filterCrit) {
+  for (const { isSelected, index } of filterCrit) {
     if (isSelected) {
-      arrResult.push(data[col - 1]);
+      arrResult.push(data[index]);
     }
   }
 

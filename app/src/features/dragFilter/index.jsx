@@ -3,7 +3,7 @@ import Square from "./Square";
 import { useRef, useState } from "react";
 import "./DragFilter.css";
 
-export default function DragFilter({ filterArr, setState }) {
+export default function DragFilter({ filterArr, setState, colNum }) {
   const [isDragging, setIsDragging] = useState(false);
 
   const [selectArea, setSelectArea] = useState({
@@ -28,11 +28,13 @@ export default function DragFilter({ filterArr, setState }) {
   }
 
   const onMouseDownHandler = (e) => {
-    setStartCor(() => ({
-      clientX: e.clientX,
-      clientY: e.clientY,
-    }));
-    setIsDragging(true);
+    if (!e.ctrlKey) {
+      setStartCor(() => ({
+        clientX: e.clientX,
+        clientY: e.clientY,
+      }));
+      setIsDragging(true);
+    }
   };
 
   const onMouseMoveHandler = (e) => {
@@ -49,8 +51,8 @@ export default function DragFilter({ filterArr, setState }) {
     setIsDragging(false);
 
     const map = getMap();
-    let newChosenMonth = [];
-    let colCount = 1;
+    let newState = [];
+    let indexCount = 0;
 
     map.forEach((value, key) => {
       const squareX = selectArea.left;
@@ -65,14 +67,14 @@ export default function DragFilter({ filterArr, setState }) {
         itemElm.left + itemElm.width > squareX &&
         squareX + squareWidth > itemElm.left;
 
-      newChosenMonth.push({
+      newState.push({
         title: key,
         isSelected,
-        col: colCount++,
+        index: indexCount++,
       });
     });
 
-    setState(newChosenMonth);
+    setState(newState);
     setSelectArea({
       top: 0,
       bottom: 0,
@@ -85,6 +87,15 @@ export default function DragFilter({ filterArr, setState }) {
     });
   };
 
+  const selectByClick = (e, index) => {
+    if (e.ctrlKey) {
+      const newState = filterArr;
+
+      newState[index] = { ...newState[index], isSelected: true };
+      setState(newState);
+    }
+  };
+
   return (
     <div
       onMouseDown={onMouseDownHandler}
@@ -93,10 +104,16 @@ export default function DragFilter({ filterArr, setState }) {
       className="filter"
     >
       <Square {...selectArea} />
-      <div className="filter-container">
+      <div
+        style={{
+          gridTemplateColumns: `repeat(${colNum}, auto)`,
+        }}
+        className="filter-container"
+      >
         {filterArr.map((month) => (
           <div
             key={month.title}
+            onClick={(e) => selectByClick(e, month.index)}
             className={month.isSelected ? "isSelected" : ""}
             ref={(node) => {
               const map = getMap();
