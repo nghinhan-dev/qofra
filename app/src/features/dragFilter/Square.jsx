@@ -4,7 +4,7 @@ export default function Square({ top, left, bottom, right }) {
   return (
     <div
       style={{
-        background: "yellow",
+        background: "#00FFFFFF",
         position: "absolute",
         top: `${top}px`,
         left: `${left}px`,

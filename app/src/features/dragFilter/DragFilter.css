@@ -1,4 +1,4 @@
-.month__filter-container {
+.filter-container {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   width: 450px;
@@ -15,4 +15,13 @@
       user-select: none;
     }
   }
+
+  & .isSelected {
+    background: var(--highlight-color);
+    color: var(--sub-color);
+  }
+}
+
+.filter {
+  padding: 2rem;
 }

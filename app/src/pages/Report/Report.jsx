@@ -15,7 +15,8 @@ import {
 } from "chart.js";
 import { Chart, Doughnut } from "react-chartjs-2";
 import "./Report.css";
-import MonthFilter from "../../features/monthFilter/MonthFilter";
+import DragFilter from "../../features/dragFilter";
+import Loading from "../../components/Loading/Loading";
 import { useState } from "react";
 
 ChartJS.register(
@@ -50,23 +51,29 @@ const options = {
 };
 
 export default function Report() {
-  const { data, isSuccess } = useGetChartDataQuery();
+  const { data, isSuccess, isLoading } = useGetChartDataQuery();
 
   const initialMonthArr = [
-    { title: "Jan", isSelected: false },
-    { title: "Feb", isSelected: false },
-    { title: "Mar", isSelected: false },
-    { title: "Apr", isSelected: false },
-    { title: "May", isSelected: false },
-    { title: "Jun", isSelected: false },
-    { title: "Jul", isSelected: false },
-    { title: "Aug", isSelected: false },
-    { title: "Sep", isSelected: false },
-    { title: "Oct", isSelected: false },
-    { title: "Nov", isSelected: false },
-    { title: "Dec", isSelected: false },
+    { title: "Jan", isSelected: true, col: 1 },
+    { title: "Feb", isSelected: true, col: 2 },
+    { title: "Mar", isSelected: true, col: 3 },
+    { title: "Apr", isSelected: true, col: 4 },
+    { title: "May", isSelected: true, col: 5 },
+    { title: "Jun", isSelected: true, col: 6 },
+    { title: "Jul", isSelected: true, col: 7 },
+    { title: "Aug", isSelected: true, col: 8 },
+    { title: "Sep", isSelected: true, col: 9 },
+    { title: "Oct", isSelected: true, col: 10 },
+    { title: "Nov", isSelected: true, col: 11 },
+    { title: "Dec", isSelected: true, col: 12 },
   ];
   const [chosenMonth, setChosenMonth] = useState(initialMonthArr);
+  const [selectedProcess, setSelectProcess] = useState([
+    { title: "extruder", isSelected: true },
+    { title: "mixing", isSelected: true },
+    { title: "crushing", isSelected: true },
+    { title: "moldSetter", isSelected: true },
+  ]);
 
   let orverallChartDataSet;
   let doughnutChartData;
@@ -75,7 +82,7 @@ export default function Report() {
     const { overallChart, doughnutChart } = data;
 
     orverallChartDataSet = {
-      labels: chosenMonth,
+      labels: filterData(chosenMonth, chosenMonth).map((month) => month.title),
       datasets: [
         {
           type: "line",
@@ -83,64 +90,65 @@ export default function Report() {
           borderColor: "rgb(234, 234, 29)",
           borderWidth: 2,
           fill: false,
-          data: chosenMonth.map((_, index) => {
-            let done = overallChart[index].stats.reduce((acc, stat) => {
+          data: filterData(overallChart, chosenMonth).map(({ stats }) => {
+            let total = stats.reduce((acc, stat) => {
               if (stat._id.status === "Done")
                 return (acc +=
-                  stat.extruder +
-                  stat.crushing +
-                  stat.mixing +
-                  stat.moldSetter);
+                  (selectedProcess.includes("extruder") && stat.extruder) +
+                  (selectedProcess.includes("crushing") && stat.crushing) +
+                  (selectedProcess.includes("mixing") && stat.mixing) +
+                  (selectedProcess.includes("moldSetter") && stat.moldSetter));
             }, 0);
 
-            return done * 1.3;
+            return total * 1.3;
           }),
         },
         {
           label: "Done",
-          data: chosenMonth.map((_, index) => {
-            let done = overallChart[index].stats.reduce((acc, stat) => {
-              if (stat._id.status === "Done")
+          data: filterData(overallChart, chosenMonth).map(({ stats }) => {
+            let total = stats.reduce((acc, stat) => {
+              if (stat._id.status === "Done") {
                 return (acc +=
-                  stat.extruder +
-                  stat.crushing +
-                  stat.mixing +
-                  stat.moldSetter);
+                  (selectedProcess.includes("extruder") && stat.extruder) +
+                  (selectedProcess.includes("crushing") && stat.crushing) +
+                  (selectedProcess.includes("mixing") && stat.mixing) +
+                  (selectedProcess.includes("moldSetter") && stat.moldSetter));
+              }
             }, 0);
 
-            return done;
+            return total;
           }),
           backgroundColor: "rgb(255, 99, 132)",
         },
         {
           label: "On Going",
-          data: chosenMonth.map((_, index) => {
-            let done = overallChart[index].stats.reduce((acc, stat) => {
+          data: filterData(overallChart, chosenMonth).map(({ stats }) => {
+            let total = stats.reduce((acc, stat) => {
               if (stat._id.status === "On Going")
                 return (acc +=
-                  stat.extruder +
-                  stat.crushing +
-                  stat.mixing +
-                  stat.moldSetter);
+                  (selectedProcess.includes("extruder") && stat.extruder) +
+                  (selectedProcess.includes("crushing") && stat.crushing) +
+                  (selectedProcess.includes("mixing") && stat.mixing) +
+                  (selectedProcess.includes("moldSetter") && stat.moldSetter));
             }, 0);
 
-            return done;
+            return total;
           }),
           backgroundColor: "rgb(75, 192, 192)",
         },
         {
           label: "Overdue",
-          data: chosenMonth.map((_, index) => {
-            let done = overallChart[index].stats.reduce((acc, stat) => {
+          data: filterData(overallChart, chosenMonth).map(({ stats }) => {
+            let total = stats.reduce((acc, stat) => {
               if (stat._id.status === "Overdue")
                 return (acc +=
-                  stat.extruder +
-                  stat.crushing +
-                  stat.mixing +
-                  stat.moldSetter);
+                  (selectedProcess.includes("extruder") && stat.extruder) +
+                  (selectedProcess.includes("crushing") && stat.crushing) +
+                  (selectedProcess.includes("mixing") && stat.mixing) +
+                  (selectedProcess.includes("moldSetter") && stat.moldSetter));
             }, 0);
 
-            return done;
+            return total;
           }),
           backgroundColor: "rgb(53, 162, 235)",
         },
@@ -175,10 +183,12 @@ export default function Report() {
 
   return (
     <section id="report" className="d__flex">
-      <MonthFilter monthArr={chosenMonth} setChosenMonth={setChosenMonth} />
-
+      {isLoading && <Loading />}
       {isSuccess && (
         <>
+          <div className="chart__filter">
+            <DragFilter filterArr={chosenMonth} setState={setChosenMonth} />
+          </div>
           <div className="overallChart chart">
             <Chart type="bar" options={options} data={orverallChartDataSet} />
           </div>
@@ -199,4 +209,16 @@ export default function Report() {
       )}
     </section>
   );
+}
+
+function filterData(data, filterCrit) {
+  const arrResult = [];
+
+  for (const { isSelected, col } of filterCrit) {
+    if (isSelected) {
+      arrResult.push(data[col - 1]);
+    }
+  }
+
+  return arrResult;
 }
