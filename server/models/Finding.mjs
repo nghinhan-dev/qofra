@@ -156,40 +156,237 @@ const findingSchema = new Schema(
             {
               $match: {
                 foundDate: {
-                  $gte: new Date("2023-01-01"),
-                  $lt: new Date("2024-01-01"),
+                  $gte: new Date("Sun, 01 Jan 2023 00:00:00 GMT"),
+                  $lt: new Date("Mon, 01 Jan 2024 00:00:00 GMT"),
                 },
               },
             },
             {
               $lookup: {
                 from: "questions",
-                let: { qID: "$question" },
+                let: {
+                  qID: "$question",
+                },
                 pipeline: [
                   {
                     $match: {
                       $expr: {
-                        $eq: [{ $toString: "$_id" }, "$$qID"],
+                        $eq: [
+                          {
+                            $toString: "$_id",
+                          },
+                          "$$qID",
+                        ],
                       },
                     },
                   },
-                  { $project: { scope: 1, _id: 0 } },
+                  {
+                    $project: {
+                      scope: 1,
+                      process: 1,
+                      _id: 0,
+                    },
+                  },
                 ],
                 as: "question",
               },
             },
             {
-              $group: {
-                _id: "$question.scope",
-                count: { $count: {} },
+              $unwind: {
+                path: "$question",
               },
             },
-            { $sort: { _id: 1 } },
+            {
+              $group: {
+                _id: {
+                  month: {
+                    $month: "$foundDate",
+                  },
+                  scope: "$question.scope",
+                },
+                extruder: {
+                  $sum: {
+                    $cond: {
+                      if: {
+                        $eq: ["$question.process", "Extruder"],
+                      },
+                      then: 1,
+                      else: 0,
+                    },
+                  },
+                },
+                crushing: {
+                  $sum: {
+                    $cond: {
+                      if: {
+                        $eq: ["$question.process", "Crushing"],
+                      },
+                      then: 1,
+                      else: 0,
+                    },
+                  },
+                },
+                mixing: {
+                  $sum: {
+                    $cond: {
+                      if: {
+                        $eq: ["$question.process", "Mixing"],
+                      },
+                      then: 1,
+                      else: 0,
+                    },
+                  },
+                },
+                moldSetter: {
+                  $sum: {
+                    $cond: {
+                      if: {
+                        $eq: ["$question.process", "Mold Setter"],
+                      },
+                      then: 1,
+                      else: 0,
+                    },
+                  },
+                },
+              },
+            },
+            {
+              $group: {
+                _id: "$_id.month",
+                results: {
+                  $push: "$$ROOT",
+                },
+              },
+            },
+            {
+              $project: {
+                results: {
+                  _id: {
+                    month: 0,
+                  },
+                },
+              },
+            },
+            {
+              $sort: {
+                _id: 1,
+              },
+            },
           ],
           { maxTimeMS: 60000, allowDiskUse: true }
         );
 
-        return { overallChart, doughnutChart };
+        const processChart = await this.aggregate([
+          {
+            $match: {
+              foundDate: {
+                $gte: new Date("Sun, 01 Jan 2023 00:00:00 GMT"),
+                $lt: new Date("Mon, 01 Jan 2024 00:00:00 GMT"),
+              },
+            },
+          },
+          {
+            $lookup: {
+              from: "questions",
+              let: {
+                qID: "$question",
+              },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $eq: [
+                        {
+                          $toString: "$_id",
+                        },
+                        "$$qID",
+                      ],
+                    },
+                  },
+                },
+                {
+                  $project: {
+                    process: 1,
+                    _id: 0,
+                  },
+                },
+              ],
+              as: "question",
+            },
+          },
+          {
+            $unwind: {
+              path: "$question",
+            },
+          },
+          {
+            $group: {
+              _id: {
+                month: {
+                  $month: "$foundDate",
+                },
+                process: "$question.process",
+              },
+              done: {
+                $sum: {
+                  $cond: {
+                    if: {
+                      $eq: ["$status", "Done"],
+                    },
+                    then: 1,
+                    else: 0,
+                  },
+                },
+              },
+              overdue: {
+                $sum: {
+                  $cond: {
+                    if: {
+                      $eq: ["$status", "Overdue"],
+                    },
+                    then: 1,
+                    else: 0,
+                  },
+                },
+              },
+              onGoing: {
+                $sum: {
+                  $cond: {
+                    if: {
+                      $eq: ["$status", "On Going"],
+                    },
+                    then: 1,
+                    else: 0,
+                  },
+                },
+              },
+            },
+          },
+          {
+            $group: {
+              _id: "$_id.month",
+              processes: {
+                $push: "$$ROOT",
+              },
+            },
+          },
+          {
+            $project: {
+              processes: {
+                _id: {
+                  month: 0,
+                },
+              },
+            },
+          },
+          {
+            $sort: {
+              _id: 1,
+            },
+          },
+        ]);
+
+        return { overallChart, doughnutChart, processChart };
       },
     },
   }

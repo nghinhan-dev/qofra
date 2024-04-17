@@ -13,7 +13,7 @@ import {
   Title,
   ArcElement,
 } from "chart.js";
-import { Chart, Doughnut } from "react-chartjs-2";
+import { Chart, Doughnut, Bar } from "react-chartjs-2";
 import "./Report.css";
 import DragFilter from "../../features/dragFilter";
 import Loading from "../../components/Loading/Loading";
@@ -77,6 +77,16 @@ export default function Report() {
 
   let orverallChartDataSet;
   let doughnutChartData;
+  let processesData;
+
+  let doughnutLabels = [
+    "Machine",
+    "Man",
+    "Material",
+    "Method/ Measure",
+    "Safety",
+  ];
+  let processLables = ["Crushing", "Extruder", "Mixing", "Mold Setter"];
 
   function accByStatus(acc, stat, status) {
     if (stat._id.status === status)
@@ -97,7 +107,7 @@ export default function Report() {
   }
 
   if (isSuccess) {
-    const { overallChart, doughnutChart } = data;
+    const { overallChart, doughnutChart, processChart } = data;
 
     orverallChartDataSet = {
       labels: filterData(chosenMonth, chosenMonth).map((month) => month.title),
@@ -157,11 +167,72 @@ export default function Report() {
     };
 
     doughnutChartData = {
-      labels: ["Machine", "Man", "Material", "Method/ Measure", "Safety"],
+      labels: doughnutLabels,
       datasets: [
         {
           label: "# of Finding",
-          data: doughnutChart.map((item) => item.count),
+          data: filterData(doughnutChart, chosenMonth).reduce(
+            (acc, { results }) => {
+              const cur = results.reduce(
+                (acc, { _id, extruder, mixing, moldSetter, crushing }) => {
+                  acc[
+                    `${
+                      _id.scope === "Method/ Measure"
+                        ? "methodMeasure"
+                        : _id.scope.toLowerCase()
+                    }`
+                  ] =
+                    ((selectedProcess.some(
+                      (element) =>
+                        element.title === "extruder" && element.isSelected
+                    ) &&
+                      extruder) ||
+                      0) +
+                    ((selectedProcess.some(
+                      (element) =>
+                        element.title === "crushing" && element.isSelected
+                    ) &&
+                      crushing) ||
+                      0) +
+                    ((selectedProcess.some(
+                      (element) =>
+                        element.title === "mixing" && element.isSelected
+                    ) &&
+                      mixing) ||
+                      0) +
+                    ((selectedProcess.some(
+                      (element) =>
+                        element.title === "moldSetter" && element.isSelected
+                    ) &&
+                      moldSetter) ||
+                      0);
+
+                  return acc; // Return the updated accumulator object
+                },
+                {
+                  machine: 0,
+                  man: 0,
+                  material: 0,
+                  methodMeasure: 0,
+                  safety: 0,
+                }
+              );
+
+              acc = acc.map(
+                (value, index) =>
+                  value +
+                  cur[
+                    doughnutLabels[index] === "Method/ Measure"
+                      ? "methodMeasure"
+                      : doughnutLabels[index].toLowerCase()
+                  ]
+              );
+
+              return acc;
+            },
+            [0, 0, 0, 0, 0]
+          ),
+
           backgroundColor: [
             "rgba(255, 99, 132, 1)",
             "rgba(54, 162, 235, 1)",
@@ -180,10 +251,137 @@ export default function Report() {
         },
       ],
     };
+
+    processesData = {
+      labels: processLables,
+      datasets: [
+        {
+          label: "Done",
+          data: filterData(processChart, chosenMonth).reduce(
+            (acc, { processes }) => {
+              const cur = processes.reduce(
+                (acc, { _id, done }) => {
+                  acc[
+                    `${
+                      _id.process === "Mold Setter"
+                        ? "moldSetter"
+                        : _id.process.toLowerCase()
+                    }`
+                  ] += done;
+
+                  return acc; // Return the updated accumulator object
+                },
+                {
+                  crushing: 0,
+                  moldSetter: 0,
+                  extruder: 0,
+                  mixing: 0,
+                }
+              );
+
+              acc = acc.map(
+                (value, index) =>
+                  value +
+                  cur[
+                    processLables[index] === "Mold Setter"
+                      ? "moldSetter"
+                      : processLables[index].toLowerCase()
+                  ]
+              );
+
+              return acc;
+            },
+            [0, 0, 0, 0]
+          ),
+          backgroundColor: "rgb(255, 99, 132)",
+        },
+        {
+          label: "Overdue",
+          data: filterData(processChart, chosenMonth).reduce(
+            (acc, { processes }) => {
+              const cur = processes.reduce(
+                (acc, { _id, overdue }) => {
+                  acc[
+                    `${
+                      _id.process === "Mold Setter"
+                        ? "moldSetter"
+                        : _id.process.toLowerCase()
+                    }`
+                  ] += overdue;
+
+                  return acc; // Return the updated accumulator object
+                },
+                {
+                  crushing: 0,
+                  moldSetter: 0,
+                  extruder: 0,
+                  mixing: 0,
+                }
+              );
+
+              acc = acc.map(
+                (value, index) =>
+                  value +
+                  cur[
+                    processLables[index] === "Mold Setter"
+                      ? "moldSetter"
+                      : processLables[index].toLowerCase()
+                  ]
+              );
+
+              return acc;
+            },
+            [0, 0, 0, 0]
+          ),
+          backgroundColor: "rgb(75, 192, 192)",
+        },
+        {
+          label: "On Going",
+          data: filterData(processChart, chosenMonth).reduce(
+            (acc, { processes }) => {
+              const cur = processes.reduce(
+                (acc, { _id, onGoing }) => {
+                  acc[
+                    `${
+                      _id.process === "Mold Setter"
+                        ? "moldSetter"
+                        : _id.process.toLowerCase()
+                    }`
+                  ] += onGoing;
+
+                  return acc; // Return the updated accumulator object
+                },
+                {
+                  crushing: 0,
+                  moldSetter: 0,
+                  extruder: 0,
+                  mixing: 0,
+                }
+              );
+
+              acc = acc.map(
+                (value, index) =>
+                  value +
+                  cur[
+                    processLables[index] === "Mold Setter"
+                      ? "moldSetter"
+                      : processLables[index].toLowerCase()
+                  ]
+              );
+
+              return acc;
+            },
+            [0, 0, 0, 0]
+          ),
+          backgroundColor: "rgb(53, 162, 235)",
+        },
+      ],
+    };
   }
 
   return (
     <section id="report" className="d__flex">
+      <h1>Report</h1>
       {isLoading && <Loading />}
       {isSuccess && (
         <>
@@ -199,21 +397,38 @@ export default function Report() {
               setState={setSelectProcess}
             />
           </div>
-          <div className="overallChart chart">
-            <Chart type="bar" options={options} data={orverallChartDataSet} />
-          </div>
-          <div className="doughnutChart chart">
-            <Doughnut
-              data={doughnutChartData}
-              options={{
-                plugins: {
-                  title: {
-                    display: true,
-                    text: "No. Findings by Scope",
+          <div className="chart__container">
+            <div className="overallChart chart">
+              <Chart type="bar" options={options} data={orverallChartDataSet} />
+            </div>
+            <div className="chart">
+              <Bar
+                options={{
+                  scales: {
+                    x: {
+                      stacked: true,
+                    },
+                    y: {
+                      stacked: true,
+                    },
                   },
-                },
-              }}
-            />
+                }}
+                data={processesData}
+              />
+            </div>
+            <div className="doughnutChart chart">
+              <Doughnut
+                data={doughnutChartData}
+                options={{
+                  plugins: {
+                    title: {
+                      display: true,
+                      text: "No. Findings by Scope",
+                    },
+                  },
+                }}
+              />
+            </div>
           </div>
         </>
       )}
