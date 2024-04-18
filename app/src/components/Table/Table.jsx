@@ -100,7 +100,9 @@ function Row({
         <p>{question.process}</p>
       </td>
       <td>
-        <p>{desc}</p>
+        <p className="wrap-text" style={{ width: "275px" }}>
+          {desc}
+        </p>
       </td>
       <td>
         <p>{displayTime(dueDate)}</p>
@@ -112,7 +114,9 @@ function Row({
         <p>{abbreviatedName(personInCharge.fullName)}</p>
       </td>
       <td>
-        <p>{action}</p>
+        <p className="wrap-text" style={{ width: "275px" }}>
+          {action}
+        </p>
       </td>
       <td>
         <div className="d__flex">{displayStatus(status)}</div>

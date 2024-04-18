@@ -255,7 +255,7 @@ function QuestionRow({
         <p>{scope}</p>
       </td>
       <td>
-        <p>{content}</p>
+        <p className="wrap-text">{content}</p>
       </td>
       <td>
         <p>{displayTime(lastTimeAudit)}</p>

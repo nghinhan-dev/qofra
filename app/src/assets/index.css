@@ -70,6 +70,13 @@ section {
   flex-direction: column;
 }
 
+.wrap-text {
+  width: 600px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .time {
   font-style: italic;
 }

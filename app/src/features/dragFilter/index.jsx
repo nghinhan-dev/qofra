@@ -95,7 +95,6 @@ export default function DragFilter({ filterArr, setState, colNum }) {
   const selectByClick = (e, index) => {
     if (e.ctrlKey) {
       const newState = [...filterArr];
-      console.log("newState:", newState);
 
       newState[index] = { ...newState[index], isSelected: true };
       setState(newState);
@@ -130,7 +129,11 @@ export default function DragFilter({ filterArr, setState, colNum }) {
               }
             }}
           >
-            <p>{month.title}</p>
+            <p>
+              {month.title === "moldSetter"
+                ? "Mold Setter"
+                : month.title.charAt(0).toUpperCase() + month.title.slice(1)}
+            </p>
           </div>
         ))}
       </div>
