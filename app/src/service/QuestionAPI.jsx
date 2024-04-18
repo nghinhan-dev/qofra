@@ -89,6 +89,7 @@ export const questionApiSlice = apiSlice.injectEndpoints({
       query: (query) => ({
         url: query ? `/question${query}` : `/question`,
       }),
+      providesTags: ["Question"],
     }),
     addQuestions: builder.mutation({
       query: (formData) => ({
@@ -96,7 +97,7 @@ export const questionApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: formData,
       }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(arg, { queryFulfilled }) {
         toast.loading("Please wait...", {
           toastId: "aQ_loading",
         });
@@ -109,17 +110,16 @@ export const questionApiSlice = apiSlice.injectEndpoints({
             isLoading: false,
             autoClose: 700,
           });
-
-          dispatch(nextQ());
         } catch (error) {
           toast.update("aQ_loading", {
-            render: error,
+            render: error.data.message,
             type: "error",
             isLoading: false,
             autoClose: 1000,
           });
         }
       },
+      invalidatesTags: ["Question"],
     }),
   }),
   overrideExisting: false,

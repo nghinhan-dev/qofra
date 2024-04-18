@@ -9,6 +9,7 @@ import OptDialog from "../../components/Dialog/OptDialog";
 import Pagination from "../../components/Pagination/Pagination";
 import { useAddQuestionsMutation } from "../../service/QuestionAPI";
 import "./Question.css";
+import "../../components/Table/Table.css";
 import { Copy } from "lucide-react";
 
 export default function Question() {
@@ -29,6 +30,10 @@ export default function Question() {
     },
     dep: {
       values: ["Production", "C&M"],
+      selected: [],
+    },
+    level: {
+      values: [1, 2, 3],
       selected: [],
     },
   });
@@ -64,21 +69,22 @@ export default function Question() {
   let maxPage = 3;
 
   const checkHandler = (key, value, checked) => {
-    const newFilterState = { ...filterState }; // Create a shallow copy of the state object
+    const newFilterState = { ...filterState };
 
     if (checked) {
-      newFilterState[key].selected.push(value);
+      newFilterState[key].selected.push(isNaN(value) ? value : value * 1);
     } else {
       const index = newFilterState[key].selected.findIndex(
-        (selectedValue) => selectedValue === value
+        (selectedValue) =>
+          selectedValue === (key === "level" ? value * 1 : value)
       );
 
       if (index !== -1) {
-        newFilterState[key].selected.splice(index, 1); // Remove the item from the array
+        newFilterState[key].selected.splice(index, 1);
       }
     }
 
-    setFilterState(newFilterState); // Update the state with the new object
+    setFilterState(newFilterState);
   };
 
   const renderTags = () => {

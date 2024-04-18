@@ -13,11 +13,29 @@ const questionSchema = new Schema(
     ],
     content: String,
     dep: String,
-    scope: String,
-    level: Number,
+    scope: {
+      type: String,
+      enum: {
+        values: ["Safety", "Man", "Machine", "Method/ Measure", "Material"],
+        message: "{VALUE} is not supported",
+      },
+    },
+    level: {
+      type: Number,
+      enum: {
+        values: [1, 2, 3],
+        message: "{VALUE} is not supported",
+      },
+    },
     process: String,
-    lastTimeAudit: Date,
-    hasIssue: Boolean,
+    lastTimeAudit: {
+      type: Date,
+      default: Date.now(),
+    },
+    hasIssue: {
+      type: Boolean,
+      deafult: false,
+    },
   },
   {
     statics: {

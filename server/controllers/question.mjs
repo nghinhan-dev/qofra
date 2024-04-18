@@ -1,7 +1,7 @@
 import Question from "../models/Question.mjs";
 import Audit from "../models/Audit.mjs";
 import { createError } from "../utils/createError.mjs";
-import { readExcelFile } from "../lib/excel.mjs";
+import { generateDataFromWorkSheet, getWorkSheet } from "../lib/excel.mjs";
 
 export async function generateQuestions(req, res, next) {
   try {
@@ -69,13 +69,16 @@ export async function paginate(req, res, next) {
 }
 
 export async function addQuestions(req, res, next) {
+  try {
   const exelFile = req.file;
 
-  const workSheet = await readExcelFile(exelFile.buffer);
+    const workSheet = await getWorkSheet(exelFile.buffer, "data");
+    const data = generateDataFromWorkSheet(workSheet);
 
-  workSheet.eachRow((row) => {
-    console.log(row.values);
-  });
+    await Question.create(data);
 
   res.status(200).send({ message: "Success" });
+  } catch (error) {
+    next(error);
+  }
 }
