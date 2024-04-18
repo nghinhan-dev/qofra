@@ -5,13 +5,19 @@ import { useGetQuestionsQuery } from "../../service/QuestionAPI";
 import { displayTime } from "../../utils/converter";
 import { updateQuery } from "../../lib/redux/questionSlice";
 import Dialog from "../../components/Dialog/Dialog";
+import OptDialog from "../../components/Dialog/OptDialog";
 import Pagination from "../../components/Pagination/Pagination";
+import { useAddQuestionsMutation } from "../../service/QuestionAPI";
 import "./Question.css";
 import { Copy } from "lucide-react";
 
 export default function Question() {
   const dispatch = useDispatch();
+  const [addQuestions] = useAddQuestionsMutation();
+
   const searchQuery = useSelector((state) => state.question.searchQuery);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
   const [filterState, setFilterState] = useState({
     scope: {
       values: ["Man", "Material", "Safety", "Method/ Measure", "Machine"],
@@ -26,6 +32,27 @@ export default function Question() {
       selected: [],
     },
   });
+
+  const handleFileChange = (e) => {
+    setSelectedFiles(Array.from(e.target.files));
+  };
+
+  const submitAddQuestions = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    // Append each selected file to FormData
+    selectedFiles.forEach((file) => {
+      formData.append("excelFile", file);
+    });
+
+    try {
+      await addQuestions(formData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // paginate state
   const [currentPage, setCurrentPage] = useState(1);
@@ -137,10 +164,29 @@ export default function Question() {
       <div className="filter--container">
         <div className="filter--tags d__flex">{renderTags()}</div>
         <Dialog
-          options={filterState}
-          applyFilter={applyFilter}
-          setStateHanlder={checkHandler}
-        />
+          name={"Filter"}
+          iconName={"SlidersHorizontal"}
+          triggerAction={applyFilter}
+        >
+          <OptDialog options={filterState} setStateHanlder={checkHandler} />
+        </Dialog>
+        <Dialog
+          triggerAction={submitAddQuestions}
+          name={"Add Q."}
+          iconName={"Plus"}
+        >
+          <form encType="multipart/form-data">
+            <div className="d__flex">
+              <input
+                type="file"
+                name="findingImages"
+                accept=".xlsx"
+                onChange={handleFileChange}
+                multiple
+              />
+            </div>
+          </form>
+        </Dialog>
       </div>
       <div className="table__container ">
         <table>

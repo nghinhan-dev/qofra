@@ -14,8 +14,7 @@
   }
 
   & .overallChart {
-    width: 600px;
-    aspect-ratio: 2/1;
+    width: 100%;
     grid-column: 1 / 3;
   }
 

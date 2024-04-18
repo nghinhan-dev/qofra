@@ -38,16 +38,21 @@ export default function DragFilter({ filterArr, setState, colNum }) {
   };
 
   const onMouseMoveHandler = (e) => {
-    isDragging &&
+    if (isDragging && !e.ctrlKey) {
       setSelectArea(() => ({
         top: e.clientY > startCor.clientY ? startCor.clientY : e.clientY,
         bottom: e.clientY > startCor.clientY ? e.clientY : startCor.clientY,
         right: e.clientX > startCor.clientX ? e.clientX : startCor.clientX,
         left: e.clientX > startCor.clientX ? startCor.clientX : e.clientX,
       }));
+    }
   };
 
-  const onMouseUpHanlder = () => {
+  const onMouseUpHanlder = (e) => {
+    if (e.ctrlKey && !isDragging) {
+      return;
+    }
+
     setIsDragging(false);
 
     const map = getMap();
@@ -89,7 +94,8 @@ export default function DragFilter({ filterArr, setState, colNum }) {
 
   const selectByClick = (e, index) => {
     if (e.ctrlKey) {
-      const newState = filterArr;
+      const newState = [...filterArr];
+      console.log("newState:", newState);
 
       newState[index] = { ...newState[index], isSelected: true };
       setState(newState);
