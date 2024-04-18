@@ -7,12 +7,6 @@ const depOptions = [
   { value: "Production", label: "Production" },
 ];
 
-const levelOptions = [
-  { value: 1, label: "1" },
-  { value: 2, label: "2" },
-  { value: 3, label: "3" },
-];
-
 // eslint-disable-next-line react/prop-types
 export default function GenQuestion({ setDepartment, setProcess, setLevel }) {
   const [processOpts, setProcessOpts] = useState([
@@ -21,15 +15,35 @@ export default function GenQuestion({ setDepartment, setProcess, setLevel }) {
     { value: "Mixing", label: "Mixing" },
     { value: "Crushing", label: "Production" },
   ]);
+  const [levelOptions, setLevelOpts] = useState([
+    { value: "Mold Setter", label: "Mold Setter" },
+    { value: "Extruder", label: "Extruder" },
+    { value: "Mixing", label: "Mixing" },
+    { value: "Crushing", label: "Production" },
+  ]);
 
   const deparmentSelect = (value) => {
-    return value === "C&M"
-      ? setProcessOpts([
-          { value: "Extruder", label: "Extruder" },
-          { value: "Mixing", label: "Mixing" },
-          { value: "Crushing", label: "Crushing" },
-        ])
-      : setProcessOpts([{ value: "Mold Setter", label: "Mold Setter" }]);
+    if (value === "C&M") {
+      setProcessOpts([
+        { value: "Extruder", label: "Extruder" },
+        { value: "Mixing", label: "Mixing" },
+        { value: "Crushing", label: "Crushing" },
+      ]);
+
+      setLevelOpts([
+        { value: 1, label: "1" },
+        { value: 2, label: "2" },
+        { value: 3, label: "3" },
+      ]);
+      return;
+    }
+
+    setProcessOpts([{ value: "Mold Setter", label: "Mold Setter" }]);
+    setLevelOpts([
+      { value: 2, label: "2" },
+      { value: 3, label: "3" },
+    ]);
+    return;
   };
 
   return (

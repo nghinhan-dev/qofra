@@ -45,9 +45,15 @@ export async function paginate(req, res, next) {
 
     if (Object.keys(req.query).length !== 0) {
       const aggregateObj = Object.fromEntries(
-        Object.entries(req.query).map(([key, value]) =>
-          Array.isArray(value) ? [key, { $in: value }] : [key, value]
-        )
+        Object.entries(req.query).map(([key, value]) => {
+          if (key === "level") {
+            return Array.isArray(value)
+              ? [key, { $in: value.map((v) => v * 1) }]
+              : [key, value * 1];
+          }
+
+          return Array.isArray(value) ? [key, { $in: value }] : [key, value];
+        })
       );
 
       questions = await Question.aggregate([
@@ -70,14 +76,14 @@ export async function paginate(req, res, next) {
 
 export async function addQuestions(req, res, next) {
   try {
-  const exelFile = req.file;
+    const exelFile = req.file;
 
     const workSheet = await getWorkSheet(exelFile.buffer, "data");
     const data = generateDataFromWorkSheet(workSheet);
 
     await Question.create(data);
 
-  res.status(200).send({ message: "Success" });
+    res.status(200).send({ message: "Success" });
   } catch (error) {
     next(error);
   }
