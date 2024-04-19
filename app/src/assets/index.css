@@ -58,6 +58,7 @@ a {
     background: var(--sub-color);
     color: var(--highlight-color);
     font-weight: 500;
+    font-size: 0.8rem;
     padding: 0.2rem 0.25rem;
     border-radius: 4px;
   }
@@ -79,6 +80,7 @@ section {
 
 .time {
   font-style: italic;
+  font-size: 0.9rem;
 }
 
 @media screen and (max-width: 768px) {
