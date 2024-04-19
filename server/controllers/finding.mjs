@@ -86,7 +86,7 @@ export async function getFindings(req, res, next) {
       },
     ]);
 
-    res.status(200).send(findings);
+    res.status(200).send(findings.sort((a, b) => b.dueDate - a.dueDate));
   } catch (error) {
     next(error);
   }
@@ -105,7 +105,9 @@ export async function getDetailFinding(req, res, next) {
       },
     ]);
 
-    const isPIC = req.user.fullName === finding.personInCharge.fullName;
+    const isPIC =
+      req.user.fullName === finding.personInCharge.fullName ||
+      req.user.role === "ADMIN";
 
     if (!finding) throw createError(404, "Cannot find Finding with given id");
 

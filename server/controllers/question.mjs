@@ -6,7 +6,7 @@ import { generateDataFromWorkSheet, getWorkSheet } from "../lib/excel.mjs";
 export async function generateQuestions(req, res, next) {
   try {
     const { level } = req.body;
-    const roleIndex = ["TL", "HOD", "BOD"].findIndex(
+    const roleIndex = ["TL", "HOD", "BOD", "ADMIN"].findIndex(
       (role) => role === req.user.role
     );
 

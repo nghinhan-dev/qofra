@@ -19,11 +19,11 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { accessToken } = await login({
+      const { accessToken, fullName } = await login({
         username: username,
         password: password,
       }).unwrap();
-      dispatch(setCredentials({ accessToken }));
+      dispatch(setCredentials({ accessToken, fullName }));
       setUsername("");
       setPassword("");
       navigate("/");
