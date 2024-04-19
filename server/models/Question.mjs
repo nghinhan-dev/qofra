@@ -34,7 +34,7 @@ const questionSchema = new Schema(
     },
     hasIssue: {
       type: Boolean,
-      deafult: false,
+      default: false,
     },
   },
   {
@@ -64,9 +64,12 @@ const questionSchema = new Schema(
           },
           {
             $project: {
-              question: {
-                $slice: ["$question", 1 * level],
-              },
+              question:
+                level * 1 === 3
+                  ? 1
+                  : {
+                      $slice: ["$question", 1 * level],
+                    },
             },
           },
           {
