@@ -96,7 +96,10 @@ export default function DragFilter({ filterArr, setState, colNum }) {
     if (e.ctrlKey) {
       const newState = [...filterArr];
 
-      newState[index] = { ...newState[index], isSelected: true };
+      newState[index] = {
+        ...newState[index],
+        isSelected: !newState[index].isSelected,
+      };
       setState(newState);
     }
   };
