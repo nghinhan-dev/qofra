@@ -60,6 +60,7 @@ export async function login(req, res, next) {
 
     res.send({
       message: "Success",
+      username: user.fullName,
       accessToken: accessToken,
     });
   } catch (error) {
@@ -149,7 +150,7 @@ export async function refresh(req, res, next) {
       }
     );
 
-    res.send({ accessToken: accessToken });
+    res.send({ accessToken: accessToken, username: foundUser.fullName });
   } catch (error) {
     next(error);
   }

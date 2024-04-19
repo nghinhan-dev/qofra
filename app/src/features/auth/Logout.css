@@ -7,4 +7,10 @@
   border-radius: 4px;
   color: var(--sub-color);
   cursor: pointer;
+  gap: 4px;
+
+  & p {
+    padding: 0 4px;
+    border-right: 2px solid;
+  }
 }

@@ -10,7 +10,7 @@ const userSchema = new Schema({
   role: {
     type: String,
     enum: {
-      values: ["TL", "HOD", "BOD"],
+      values: ["TL", "HOD", "BOD", "ADMIN"],
       message: "{VALUE} is not supported",
     },
   },
