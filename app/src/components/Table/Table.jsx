@@ -68,9 +68,11 @@ export default function Table({ data, setSelectPerson, options }) {
               </tr>
             </thead>
             <tbody>
-              {pageArr[currentPage - 1].map((finding) => (
-                <Row key={finding._id} {...finding} />
-              ))}
+              {!pageArr[currentPage - 1]
+                ? setCurrentPage(1)
+                : pageArr[currentPage - 1].map((finding) => (
+                    <Row key={finding._id} {...finding} />
+                  ))}
             </tbody>
           </table>
         </div>
