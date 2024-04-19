@@ -5,6 +5,15 @@ import { generateDataFromWorkSheet, getWorkSheet } from "../lib/excel.mjs";
 
 export async function generateQuestions(req, res, next) {
   try {
+    const { level } = req.body;
+    const roleIndex = ["TL", "HOD", "BOD"].findIndex(
+      (role) => role === req.user.role
+    );
+
+    if (roleIndex + 1 < level) {
+      throw createError(401, "You cannot audit this level");
+    }
+
     const nestedQuestions = await Question.generateQuestions(req.body);
 
     if (nestedQuestions.length === 0)
