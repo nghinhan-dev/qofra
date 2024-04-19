@@ -42,7 +42,7 @@ export async function createFinding(req, res, next) {
       question: questionID,
       foundDate: foundDate,
       dueDate: dueDate,
-      reporter: req.user.fullName,
+      detector: req.user.fullName,
       personInCharge: pic._id,
       desc: desc,
       images: results.map((promise) => promise.value),
