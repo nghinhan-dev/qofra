@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import Navbar from "../components/Navbar/Navbar";
-import Footer from "../components/Footer/Footer";
 import Logout from "../features/auth/Logout";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +28,7 @@ export default function Layout({ children }) {
   return (
     <>
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={700}
         hideProgressBar
         newestOnTop={false}
@@ -46,7 +45,6 @@ export default function Layout({ children }) {
       <Logout sendLogout={sendLogoutHandler} />
       <Navbar />
       {children}
-      <Footer />
     </>
   );
 }

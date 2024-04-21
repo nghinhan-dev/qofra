@@ -14,7 +14,7 @@ import "./Table.css";
 export default function Table({ data, setSelectPerson, options }) {
   // paginate state
   const [currentPage, setCurrentPage] = useState(1);
-  const itemPerPage = 6;
+  const itemPerPage = 5;
   let maxPage = 3;
 
   maxPage = Math.ceil(data.length / itemPerPage);

@@ -3,9 +3,9 @@
   right: 10px;
   top: 10px;
   padding: 5px;
-  background: var(--sub-op-color);
+  background: var(--sub-color);
   border-radius: 4px;
-  color: var(--sub-color);
+  color: var(--primary-color);
   cursor: pointer;
   gap: 4px;
 

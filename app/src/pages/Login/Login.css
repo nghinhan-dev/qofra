@@ -9,6 +9,12 @@
   align-items: center;
   justify-content: center;
 
+  & .img-logo {
+    background: var(--sub-color);
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+
   &::after {
     content: "";
     position: absolute;
@@ -32,9 +38,13 @@
     background-color: var(--primary-color);
     border-radius: 4px;
     padding: 2.5rem;
+
+    & button[type="submit"] {
+      color: var(--primary-color);
+    }
   }
 
   & img {
-    width: 80%;
+    width: 100%;
   }
 }

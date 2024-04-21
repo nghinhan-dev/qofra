@@ -36,7 +36,9 @@ export default function Login() {
     <>
       <div id="loginPage">
         <div className="login__container">
-          <img src="/framas_logo.png" alt="Framas Logo" />
+          <div className="img-logo">
+            <img src="/framas_logo.png" alt="Framas Logo" />
+          </div>
           <form method="POST" onSubmit={handleSubmit}>
             <InputText
               icon={<User />}

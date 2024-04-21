@@ -100,11 +100,15 @@ export default function Finding() {
           <div className="finding--row d__flex">
             <p className="key">Images</p>
             <div>
-              {images.map((imgUrl, index) => (
-                <a target="_blank" href={imgUrl} key={_id + index}>
-                  Image {index + 1} Url
-                </a>
-              ))}
+              {images.length !== 0 ? (
+                images.map((imgUrl, index) => (
+                  <a target="_blank" href={imgUrl} key={_id + index}>
+                    Image {index + 1} Url
+                  </a>
+                ))
+              ) : (
+                <p>Emtpy Images!!</p>
+              )}
             </div>
           </div>
           <div className="finding--row d__flex">

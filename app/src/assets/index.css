@@ -9,8 +9,10 @@
 }
 
 :root {
-  --primary-color: hsl(240, 10%, 3.9%);
-  --sub-color: #fff;
+  /* --primary-color: hsl(240, 10%, 3.9%);
+  --sub-color: #fff; */
+  --primary-color: #fff;
+  --sub-color: hsl(240, 10%, 3.9%);
   --sub-op-color: hsla(0, 0%, 100%, 0.096);
   --txt-op-color: hsl(0, 0%, 100%, 45%);
   --highlight-color: #505050;
@@ -36,7 +38,7 @@ a {
   justify-content: flex-start;
   gap: 4px;
   width: fit-content;
-  color: var(--primary-color);
+  color: black;
   font-weight: 600;
 }
 .status__ongoing {
@@ -56,7 +58,7 @@ a {
 
   & li {
     background: var(--sub-color);
-    color: var(--highlight-color);
+    color: var(--primary-color);
     font-weight: 500;
     font-size: 0.8rem;
     padding: 0.2rem 0.25rem;

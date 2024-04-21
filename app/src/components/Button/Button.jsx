@@ -6,7 +6,7 @@ export default function Button({
   value = "button",
   disabled,
   onClick,
-  bgColor = "#fff",
+  bgColor = "var(--sub-color)",
 }) {
   return (
     <button

@@ -23,6 +23,12 @@ dialog {
     gap: 3px;
     margin-left: 10px;
     font-weight: 600;
+    color: white;
+
+    &:first-child {
+      background: white !important;
+      color: black;
+    }
   }
 }
 
@@ -48,7 +54,9 @@ dialog {
     flex-grow: auto;
 
     & label {
-      font-weight: bold;
+      font-weight: 400;
+      color: white;
+
       line-height: 1.1;
       display: grid;
       grid-template-columns: 1em auto;
@@ -67,6 +75,7 @@ dialog {
       text-transform: capitalize;
       margin-bottom: 1rem;
       background: var(--sub-color);
+      color: white;
       padding: 4px 6px;
       cursor: pointer;
       transition: 0.5 s all;

@@ -13,7 +13,7 @@ export default function Pagination({ currentPage, setCurrentPage, max }) {
         }}
       >
         <Icons
-          color={currentPage === 1 ? "hsl(0, 0%, 100%, 45%)" : "white"}
+          color={currentPage === 1 ? "rgba(0, 0, 0, 0.568)" : "black"}
           size={25}
           name={"ChevronLeft"}
         />
@@ -64,7 +64,7 @@ export default function Pagination({ currentPage, setCurrentPage, max }) {
         }}
       >
         <Icons
-          color={currentPage === max ? "hsl(0, 0%, 100%, 45%)" : "white"}
+          color={currentPage === max ? "rgba(0, 0, 0, 0.568)" : "black"}
           size={25}
           name={"ChevronRight"}
         />
